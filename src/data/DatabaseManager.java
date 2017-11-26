@@ -10,6 +10,14 @@ import java.io.File;
  */
 public class DatabaseManager implements IDatabaseManager {
     private Database databaseInUse;
+    private static DatabaseManager databaseManager;
+
+    public static DatabaseManager getInstance() {
+        if (databaseManager == null) {
+            databaseManager = new DatabaseManager();
+        }
+        return databaseManager;
+    }
 
     @Override
     public void createDatabase(String databaseName) {
