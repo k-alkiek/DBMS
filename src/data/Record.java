@@ -11,7 +11,7 @@ import java.util.Map;
 public class Record implements IRecord {
     Map<String, ICell> fields;
 
-    public Record(List<String> fieldNames, List<ICell> cells) throws InvalidDataTypeException, RuntimeException {
+    public Record(List<String> fieldNames, List<ICell> cells) {
         if (fieldNames.size() != cells.size()) {
             throw new RuntimeException();
         }
@@ -27,7 +27,7 @@ public class Record implements IRecord {
     }
 
     @Override
-    public void setAttribute(String fieldName, ICell cell) throws InvalidDataTypeException {
+    public void setAttribute(String fieldName, ICell cell) {
         fields.put(fieldName, cell);
     }
 

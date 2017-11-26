@@ -22,15 +22,18 @@ public class Database implements IDatabase {
 
     @Override
     public void deleteTable(String tableName) throws TableNotFoundException {
-
-        File file = new File(this.getName()+"/"+tableName+".xml");
-        if(!file.exists()) {
+        String databasePath = DatabaseManager.getInstance().databasePath(getName());
+        File XMLFile = new File(databasePath + "/" + tableName + ".xml");
+        File XSCFile = new File(databasePath + "/" + tableName + ".xsc");
+        if(!XMLFile.exists()) {
             throw new TableNotFoundException();
         }
-        file.delete();
+        XMLFile.delete();
+        XSCFile.delete();
 
     }
 
+    @Override
     public String getName() {
         return name;
     }

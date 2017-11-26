@@ -1,8 +1,6 @@
 package operations;
 
-import data.DatabaseManager;
-import data.Database;
-import data.IField;
+import data.*;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -22,8 +20,8 @@ public class CreateTable implements IBooleanOperation {
     }
     @Override
     public boolean execute() {
-        DatabaseManager manger = new DatabaseManager();
-        Database database = manger.getDatabaseInUse(databaseName);
+        IDatabaseManager manger = new DatabaseManager();
+        IDatabase database = manger.getDatabaseInUse();
         database.createTable(tableName, Arrays.asList(fileds));
         return true;
     }

@@ -1,9 +1,6 @@
 package operations;
 
-import data.Database;
-import data.DatabaseManager;
-import data.IRecord;
-import data.TableXML;
+import data.*;
 
 /**
  * Created by khaled on 11/20/17.
@@ -20,8 +17,8 @@ public class Insert implements IBooleanOperation {
 
     @Override
     public boolean execute() {
-        DatabaseManager manager = new DatabaseManager();
-        Database database = manager.getDatabaseInUse("A7la mesa");
+        IDatabaseManager manager = new DatabaseManager();
+        IDatabase database = manager.getDatabaseInUse();
         TableXML table = new TableXML(database.getName(), tableName);
         table.insert(record);
         return true;

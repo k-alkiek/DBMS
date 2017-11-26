@@ -19,8 +19,8 @@ public class Select implements IDataOperation {
     }
     @Override
     public Object[][] execute() {
-        DatabaseManager manager = new DatabaseManager();
-        Database database = manager.getDatabaseInUse("A7la mesa");
+        IDatabaseManager manager = new DatabaseManager();
+        IDatabase database = manager.getDatabaseInUse();
         TableXML table = new TableXML(database.getName(), tableName);
         List<IRecord> records = table.select( condition );
         List<IField> fields = table.getFields();

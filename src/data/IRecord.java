@@ -7,5 +7,5 @@ import data.Exceptions.InvalidDataTypeException;
  */
 public interface IRecord {
     ICell getAttribute(String fieldName);
-    void setAttribute(String fieldName, ICell data) throws InvalidDataTypeException;
+    void setAttribute(String fieldName, ICell data);
 }

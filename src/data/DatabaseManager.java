@@ -28,7 +28,7 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
     @Override
-    public void dropDatabase(String databaseName) {
+    public void dropDatabase(String databaseName) throws DatabaseNotFoundException {
         File databaseDir = new File(databasePath(databaseName));
         deleteFilesInDirectory(databaseDir);
         databaseDir.delete();
