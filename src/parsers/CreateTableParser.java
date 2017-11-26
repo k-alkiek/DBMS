@@ -7,21 +7,30 @@ import java.util.regex.Pattern;
  * Created by khaled on 11/22/17.
  */
 public class CreateTableParser implements IBooleanParser {
-    String tableName;
+    private String fields;
     @Override
     public boolean parse(String query) throws SQLException {
         if (isValidQuery(query)) {
-            return false;
+            return true;
         } else {
             throw new SQLException("invalid Query");
         }
     }
 
+    public String getTableName(String query) {
+        query = query.trim();
+        String tableName = query.split("\\s+")[2];
+        return tableName;
+    }
+
+    public String getFields(String query) {
+        fields = query.substring(query.lastIndexOf("(") + 1, query.lastIndexOf(")"));
+        return fields;
+    }
+
     private boolean isValidQuery(String query) {
-        if (Pattern.matches("(?!)\\s*(CREATE)\\s+(TABLE)\\s+\\w+\\s*(\\()\\s*(\\w+\\s+(varchar|int)(,)\\s*)*" +
-                        "(\\w+\\s+(varchar|int)\\s*)(\\))(;)\\s*",
-                query)) {
-            tableName = query.split("\\s+")[2];
+        if (Pattern.matches("(?i)\\s*(CREATE)\\s+(TABLE)\\s+\\w+\\s*(\\()\\s*(\\w+\\s+(varchar|int)\\s*(,)\\s*)*" +
+                "(\\w+\\s+(varchar|int)\\s*)(\\))\\s*(;)\\s*", query)) {
             return true;
         }
         return false;
