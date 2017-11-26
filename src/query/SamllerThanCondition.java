@@ -5,24 +5,29 @@ import data.IField;
 import data.IRecord;
 
 public class SamllerThanCondition implements ICondition {
-    private IField field;
-    private ICell data;
+    private String fieldName;
+    private Object data;
     @Override
     public boolean validate(IRecord record) {
-        // ToDo
-        return false;
+        try {
+            Object recordData = record.getAttribute(fieldName).getData();
+            return ((Comparable)recordData).compareTo(data) == -1;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
-    public SamllerThanCondition(IField field, ICell data) {
-        this.field = field;
+    public SamllerThanCondition(String fieldName, Object data) {
+        this.fieldName = fieldName;
         this.data = data;
     }
 
-    public void setField(IField field) {
-        this.field = field;
+    public void setField(String fieldName) {
+        this.fieldName = fieldName;
     }
 
-    public void setData(ICell data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }
