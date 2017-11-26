@@ -35,7 +35,7 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
     @Override
-    public IDatabase getDatabaseInUse(String databaseName) {
+    public IDatabase getDatabaseInUse() {
         return databaseInUse;
     }
 

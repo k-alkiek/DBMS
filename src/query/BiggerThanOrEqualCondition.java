@@ -1,24 +1,22 @@
 package query;
 
-import data.ICell;
-import data.IField;
 import data.IRecord;
 
-public class SamllerThanCondition implements ICondition {
+public class BiggerThanOrEqualCondition implements ICondition {
     private String fieldName;
     private Object data;
     @Override
     public boolean validate(IRecord record) {
         try {
             Object recordData = record.getAttribute(fieldName).getData();
-            return ((Comparable)recordData).compareTo(data) == -1;
+            return ((Comparable)recordData).compareTo(data) >= 0;
         }
         catch (Exception e) {
             return false;
         }
     }
 
-    public SamllerThanCondition(String fieldName, Object data) {
+    public BiggerThanOrEqualCondition(String fieldName, Object data) {
         this.fieldName = fieldName;
         this.data = data;
     }

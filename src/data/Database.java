@@ -1,7 +1,9 @@
 package data;
 
-import java.util.List;
+import data.Exceptions.TableNotFoundException;
 
+import java.util.List;
+import java.io.*;
 /**
  * Created by khaled on 11/25/17.
  */
@@ -19,7 +21,17 @@ public class Database implements IDatabase {
     }
 
     @Override
-    public void deleteTable(String tableName) {
-        //TODO Delete table by path
+    public void deleteTable(String tableName) throws TableNotFoundException {
+
+        File file = new File(this.getName()+"/"+tableName+".xml");
+        if(!file.exists()) {
+            throw new TableNotFoundException();
+        }
+        file.delete();
+
+    }
+
+    public String getName() {
+        return name;
     }
 }

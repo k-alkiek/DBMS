@@ -1,5 +1,7 @@
 package data;
 
+import data.Exceptions.TableNotFoundException;
+
 import java.util.List;
 
 /**
@@ -7,5 +9,5 @@ import java.util.List;
  */
 public interface IDatabase {
     void createTable(String tableName,List<IField> fields);
-    void deleteTable(String tableName);
+    void deleteTable(String tableName) throws TableNotFoundException;
 }
