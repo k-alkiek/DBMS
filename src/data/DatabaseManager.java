@@ -9,13 +9,11 @@ import java.io.File;
  * Created by khaled on 11/26/17.
  */
 public class DatabaseManager implements IDatabaseManager {
-    private final String databasesPath = "/databases/";
     private Database databaseInUse;
 
     @Override
     public void createDatabase(String databaseName) {
         //TODO create database folder
-        new File(databasesPath + databaseName).mkdir();
         databaseInUse = new Database(databaseName);
     }
 

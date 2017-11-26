@@ -6,15 +6,15 @@ import java.util.List;
  * Created by khaled on 11/25/17.
  */
 public class Database implements IDatabase {
-    String path;
+    private String name;
 
-    public Database(String path) {
-        this.path = path;
+    public Database(String name) {
+        this.name = name;
     }
 
     @Override
     public void createTable(String tableName, List<IField> fields) {
-        ITable table = new TableXML(this.path, tableName);
+        ITable table = new TableXML(this.name, tableName);
         table.setFields(fields);
     }
 

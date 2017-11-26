@@ -7,10 +7,10 @@ import java.util.List;
  */
 public class TableXML implements ITable {
     String name;
-    String databasePath;
+    String databaseName;
 
-    public TableXML(String databasePath, String name) {
-        this.databasePath = databasePath;
+    public TableXML(String databaseName, String name) {
+        this.databaseName = databaseName;
         this.name = name;
     }
 
