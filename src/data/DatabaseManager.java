@@ -2,15 +2,16 @@ package data;
 
 import data.Exceptions.DatabaseNotFoundException;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 
 /**
  * Created by khaled on 11/26/17.
  */
 public class DatabaseManager implements IDatabaseManager {
-    private Database databaseInUse;
+    private IDatabase databaseInUse;
     private static DatabaseManager databaseManager;
+
+    private static final String databasesPath = "databases/";
 
     public static DatabaseManager getInstance() {
         if (databaseManager == null) {
@@ -20,23 +21,38 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
     @Override
-    public void createDatabase(String databaseName) {
-        //TODO create database folder
+    public IDatabase createDatabase(String databaseName) {
+        new File(databasePath(databaseName)).mkdirs();
         databaseInUse = new Database(databaseName);
+        return databaseInUse;
     }
 
     @Override
     public void dropDatabase(String databaseName) {
-        //TODO delete database folder
+        File databaseDir = new File(databasePath(databaseName));
+        deleteFilesInDirectory(databaseDir);
+        databaseDir.delete();
     }
 
     @Override
-    public Database getDatabaseInUse(String databaseName) {
+    public IDatabase getDatabaseInUse(String databaseName) {
         return databaseInUse;
     }
 
     @Override
     public void setDatabaseInUse(String databaseName) throws DatabaseNotFoundException {
         databaseInUse = new Database(databaseName);
+    }
+
+    public String databasePath(String databaseName) {
+        return databasesPath + databaseName;
+    }
+
+    private void deleteFilesInDirectory(File directory) {
+        String[] fileNames = directory.list();
+        for(String fileName: fileNames){
+            File currentFile = new File(directory.getPath(), fileName);
+            currentFile.delete();
+        }
     }
 }
