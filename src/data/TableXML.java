@@ -1,8 +1,6 @@
 package data;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,6 +9,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,12 +46,41 @@ public class TableXML implements ITable {
 
     @Override
     public void addField(IField field) {
-
+        if (!fieldExists(field)) {
+            List<IField> newFields = getFields();
+            newFields.add(field);
+            setFields(newFields);
+        }
     }
 
     @Override
     public List<IField> getFields() {
-        return null;
+        List<IField> fields = new ArrayList<>();
+
+        try {
+            File inputFile = new File(schemaPath());
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+
+            NodeList fieldElements = doc.getElementsByTagName("field");
+
+            for (int i = 0; i < fieldElements.getLength(); i++) {
+                Node fieldElement = fieldElements.item(i);
+
+                if (fieldElement.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) fieldElement;
+                    String fieldClassName = eElement.getAttribute("class");
+                    String fieldName = eElement.getAttribute("name");
+                    fields.add(FieldsFactory.create(fieldClassName, fieldName));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return fields;
     }
 
     @Override
@@ -82,7 +110,7 @@ public class TableXML implements ITable {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            String path = DatabaseManager.getInstance().databasePath(databaseName) + "/" + name + ".xsc";
+            String path = schemaPath();
             StreamResult result = new StreamResult(new File(path));
             transformer.transform(source, result);
 
@@ -93,6 +121,17 @@ public class TableXML implements ITable {
 
     @Override
     public boolean fieldExists(IField field) {
+        for (IField currentField : getFields()) {
+            if (field.getName().equals(currentField.getName())) return true;
+        }
         return false;
+    }
+
+    private String schemaPath() {
+        return DatabaseManager.getInstance().databasePath(databaseName) + "/" + name + ".xsc";
+    }
+
+    private String xmlPath() {
+        return DatabaseManager.getInstance().databasePath(databaseName) + "/" + name + ".xml";
     }
 }
