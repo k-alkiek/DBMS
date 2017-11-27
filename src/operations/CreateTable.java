@@ -22,8 +22,8 @@ public class CreateTable implements IBooleanOperation {
 
     @Override
     public boolean execute() {
-        IDatabaseManager manger = new DatabaseManager();
-        IDatabase database = manger.getDatabaseInUse();
+        DatabaseManager manager = DatabaseManager.getInstance();
+        IDatabase database = manager.getDatabaseInUse();
         database.createTable(tableName, Arrays.asList(myFields));
         return true;
     }

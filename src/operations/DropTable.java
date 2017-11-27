@@ -20,8 +20,8 @@ public class DropTable implements IBooleanOperation {
 
     @Override
     public boolean execute() {
-        IDatabaseManager manger = new DatabaseManager();
-        IDatabase database = manger.getDatabaseInUse();
+        DatabaseManager manager = DatabaseManager.getInstance();
+        IDatabase database = manager.getDatabaseInUse();
         try {
             database.deleteTable(tableName);
         } catch (TableNotFoundException e) {

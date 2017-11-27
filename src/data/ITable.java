@@ -11,7 +11,7 @@ public interface ITable {
     boolean insert(IRecord record);
     List<IRecord> select(ICondition condition);
     int delete(ICondition condition);
-    int update(ICondition condition, IRecord record);
+    int update(ICondition condition, List<String> fieldNams, List<String> values);
     void addField(IField field);
     List<IField> getFields();
     void setFields(List<IField> fields);

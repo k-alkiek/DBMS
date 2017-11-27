@@ -15,7 +15,7 @@ public class DropDatabase implements IBooleanOperation{
     @Override
     public boolean execute() {
 
-        DatabaseManager manager = new DatabaseManager();
+        DatabaseManager manager = DatabaseManager.getInstance();
         try {
             manager.dropDatabase(databaseName);
         } catch (DatabaseNotFoundException e) {
