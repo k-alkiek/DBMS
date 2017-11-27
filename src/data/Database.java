@@ -17,7 +17,6 @@ public class Database implements IDatabase {
     @Override
     public void createTable(String tableName, List<IField> fields) {
         ITable table = new TableXML(this.name, tableName);
-
         table.setFields(fields);
     }
 

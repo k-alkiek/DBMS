@@ -1,39 +1,12 @@
-package eg.edu.alexu.csd.oop.db.cs15;
+package main;
 
-import data.DatabaseManager;
-import data.IDatabaseManager;
-import eg.edu.alexu.csd.oop.db.Database;
 import parsers.*;
 
 import java.sql.SQLException;
 
-public class DatabaseImp implements Database {
-    DatabaseManager databaseManager;
-    public DatabaseImp(){
-        databaseManager = DatabaseManager.getInstance();
-    }
-    @Override
-    public String createDatabase(String databaseName, boolean dropIfExists) {
-        if(dropIfExists){
-            try {
-                executeStructureQuery("DROP "+databaseName);
-            } catch (SQLException e) { }
-            finally {
-                try {
-                    executeStructureQuery("CREATE "+databaseName);
-                } catch (SQLException e) {}
-            }
-        }
-        else {
-            try {
-                executeStructureQuery("CREATE "+databaseName);
-            } catch (SQLException e) {}
-        }
-        return databaseManager.databasePath(databaseName);
-    }
+public class QueryCommiter {
 
-    @Override
-    public boolean executeStructureQuery(String query) throws SQLException {
+    public static boolean executeStructureQuery(String query) throws SQLException {
         String modifiedQuery = query.trim().toLowerCase();
         IBooleanParser booleanParser = null;
         if(modifiedQuery.startsWith("create table")) {
@@ -52,14 +25,12 @@ public class DatabaseImp implements Database {
         }
         try {
             return booleanParser.parse(query);
-        }
-        catch (Exception e) {
+        }catch (Exception e) {
             throw new SQLException();
         }
     }
 
-    @Override
-    public Object[][] executeQuery(String query) throws SQLException {
+    public static Object[][] executeQuery(String query) throws SQLException {
         ICollectionParser collectionParser = null;
         String modifiedQuery = query.trim().toLowerCase();
         if(modifiedQuery.startsWith("select"))
@@ -69,8 +40,7 @@ public class DatabaseImp implements Database {
         return collectionParser.parse(query);
     }
 
-    @Override
-    public int executeUpdateQuery(String query) throws SQLException {
+    public static int executeUpdateQuery(String query) throws SQLException {
         IIntegerParser integerParser = null;
         String modifiedQuery = query.trim().toLowerCase();
         if(modifiedQuery.startsWith("insert")) {
