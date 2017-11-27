@@ -25,7 +25,7 @@ public class Insert implements IIntegerOperation {
 
     @Override
     public int execute() {
-        IDatabaseManager manager = DatabaseManager.getInstance();
+        DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
         TableXML table = new TableXML(database.getName(), tableName);
         List<Object> objectValue = new ArrayList<Object>(values);
@@ -38,12 +38,12 @@ public class Insert implements IIntegerOperation {
             {
                 if(listOfFields.get(j).getName().equals(fieldNams.get(i)))
                 {
-                   flag = 1;
+                    flag = 1;
                 }
             }
             if(flag == 0)
             {
-                return 0;
+                throw  null;
             }
         }
         table.insert(record);
