@@ -79,7 +79,7 @@ public class TableXML implements ITable {
     public int update(ICondition condition, List<String> fieldNames, List<String> values) {
         List<IRecord> records = getRecords();
         int count = 0;
-        
+
         for (IRecord record : records) {
             if (condition.validate(record)) {
                 count++;
@@ -176,8 +176,8 @@ public class TableXML implements ITable {
     }
 
     private void initializeTableFiles() {
-        setRecords(new ArrayList<>());
-        setFields(new ArrayList<>());
+        setRecords(new ArrayList<IRecord>());
+        setFields(new ArrayList<IField>());
     }
 
     private List<IRecord> getRecords() {
