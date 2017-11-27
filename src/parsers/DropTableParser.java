@@ -26,7 +26,7 @@ public class DropTableParser implements IBooleanParser {
         return tableName;
     }
     private boolean isValidateQuery (String query) {
-        if (Pattern.matches("(?i)\\s*(DROP)\\s+(TABLE)\\s+\\w+\\s*(;)\\s*", query)) {
+        if (Pattern.matches("(?i)\\s*(DROP)\\s+(TABLE)\\s+\\w+\\s*(;)?\\s*", query)) {
             return true;
         }
         return false;

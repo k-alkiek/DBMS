@@ -27,7 +27,7 @@ public class DropDatabaseParser implements IBooleanParser {
     }
 
     private boolean isValidateQuery (String query) {
-        if (Pattern.matches("(?i)\\s*(DROP)\\s+(DATABASE)\\s+\\w+\\s*(;)\\s*", query)) {
+        if (Pattern.matches("(?i)\\s*(DROP)\\s+(DATABASE)\\s+\\w+\\s*(;)?\\s*", query)) {
             return true;
         }
         return false;

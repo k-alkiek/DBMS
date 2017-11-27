@@ -28,18 +28,25 @@ public class InsertParser implements IIntegerParser {
     public String getColumns(String query) {
         secondIdx = query.toLowerCase().lastIndexOf("values");
         String columns = query.substring(firstIdx, secondIdx);
+        columns = columns.replaceAll("(\\()", "");
+        columns = columns.replaceAll("(\\))", "");
         columns = columns.trim();
         return columns;
     }
 
     public String getValues(String query) {
-        return query.substring(secondIdx + 7, query.lastIndexOf(";")).trim();
+        query = query.trim();
+        String values = query.substring(secondIdx + 7);
+        values = values.replaceAll("(\\()", "");
+        values = values.replaceAll("(\\))", "");
+        values = values.trim();
+        return values;
     }
 
     private boolean isValidQuery(String query) {
         if (Pattern.matches("(?i)\\s*(INSERT)\\s+" +
                         "(INTO)\\s+\\w+\\s*(\\()\\s*(\\w+\\s*(,)\\s*)*\\w+\\s*(\\))\\s+" +
-                        "(VALUES)\\s*(\\()\\s*(.+\\s*(,)\\s*)*.+\\s*(\\))\\s*(;)\\s*",
+                        "(VALUES)\\s*(\\()\\s*(.+\\s*(,)\\s*)*.+\\s*(\\))\\s*(;)?\\s*",
                 query)) {
             return true;
         }

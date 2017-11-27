@@ -18,8 +18,8 @@ public class SelectParser implements ICollectionParser {
     }
 
     public String getTableName(String query) {
-        String tableName = query.substring(query.toLowerCase().lastIndexOf("from ") + 5,
-                query.lastIndexOf(";"));
+        query = query.trim();
+        String tableName = query.substring(query.toLowerCase().lastIndexOf("from ") + 5);
         tableName = tableName.trim();
         return tableName;
     }
@@ -28,7 +28,7 @@ public class SelectParser implements ICollectionParser {
         return columns.trim();
     }
     private boolean isValidQuery(String query) {
-        if(Pattern.matches("(?i)\\s*(SELECT)\\s+.+\\s+(FROM)\\s+\\w+\\s*(;)\\s*", query)) {
+        if(Pattern.matches("(?i)\\s*(SELECT)\\s+.+\\s+(FROM)\\s+\\w+\\s*(;)?\\s*", query)) {
             query = query.trim();
             int firstIdx = query.toLowerCase().lastIndexOf("select") + 7,
                     secondIdx = query.toLowerCase().lastIndexOf("from");
