@@ -11,7 +11,7 @@ public class IntField implements IField {
 
     public IntField(String name) {
         this.name = name;
-        setDefault(new Object());
+        setDefault(0);
     }
 
     public IntField(String name, Object defaultValue) {
@@ -22,6 +22,11 @@ public class IntField implements IField {
     @Override
     public void setDefault(Object defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    @Override
+    public Object getDefault() {
+        return defaultValue;
     }
 
     @Override
