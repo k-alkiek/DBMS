@@ -3,29 +3,18 @@ package query;
 import data.IRecord;
 
 public class BiggerThanOrEqualCondition implements ICondition {
-    private String fieldName;
-    private Object data;
+    private ICondition equalCondition;
+    private ICondition biggerCondition;
+    private ICondition orCondition;
+
     @Override
     public boolean validate(IRecord record) {
-        try {
-            Object recordData = record.getAttribute(fieldName).getData();
-            return ((Comparable)recordData).compareTo(data) >= 0;
-        }
-        catch (Exception e) {
-            return false;
-        }
+        return orCondition.validate(record);
     }
 
     public BiggerThanOrEqualCondition(String fieldName, Object data) {
-        this.fieldName = fieldName;
-        this.data = data;
-    }
-
-    public void setField(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
+        equalCondition = new EqualCondition(fieldName, data);
+        biggerCondition = new BiggerThanCondition(fieldName, data);
+        orCondition = new OrConditonLinker(equalCondition, biggerCondition);
     }
 }

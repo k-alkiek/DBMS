@@ -1,17 +1,19 @@
 package parsers;
 
+import org.junit.Test;
+
 import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * Created by khaledabdelfattah on 11/25/17.
  */
-class ParserTest {
+public class ParserTest {
 
-    @org.junit.jupiter.api.Test
-    void createTable() {
+    @Test
+    public void createTable() {
         CreateTableParser create = new CreateTableParser();
         String query = "CREATE TABLE Persons ( PersonID int, LastName varchar, FirstName varchar, Address varchar, City varchar) ;";
         try {
@@ -24,8 +26,8 @@ class ParserTest {
                 create.getFields(query));
     }
 
-    @org.junit.jupiter.api.Test
-    void createDatabase() {
+    @Test
+    public void createDatabase() {
         CreateDatabaseParser create = new CreateDatabaseParser();
         String query = " CREATE DaTaBaSe Persons ;";
         try {
@@ -36,8 +38,8 @@ class ParserTest {
         assertEquals("Persons", create.getDataBaseName(query));
     }
 
-    @org.junit.jupiter.api.Test
-    void delete() {
+    @Test
+    public void delete() {
         DeleteParser delete = new DeleteParser();
         String query = "DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste' ; ";
         try {
@@ -57,8 +59,8 @@ class ParserTest {
         assertEquals("*", delete.getCondition(query));
     }
 
-    @org.junit.jupiter.api.Test
-    void dropDatabase() {
+    @Test
+    public void dropDatabase() {
         DropDatabaseParser drop = new DropDatabaseParser();
         String query = " DroP   DataBAse DB;";
         try {
@@ -69,8 +71,8 @@ class ParserTest {
         assertEquals("DB", drop.getDataBaseName(query));
     }
 
-    @org.junit.jupiter.api.Test
-    void dropTable() {
+    @Test
+    public void dropTable() {
         DropTableParser drop = new DropTableParser();
         String query = "DROP TABLE Shippers ; ";
         try {
@@ -80,8 +82,8 @@ class ParserTest {
         }
         assertEquals("Shippers", drop.getTableName(query));
     }
-    @org.junit.jupiter.api.Test
-    void insert() {
+    @Test
+    public void insert() {
         InsertParser insert = new InsertParser();
         String query = " iNSERT INTO Customers (CustomerName, City, Country) VaLUES ('Cardinal', 'Stavanger', 'Norway') ; ";
         try {
@@ -94,8 +96,8 @@ class ParserTest {
         assertEquals("('Cardinal', 'Stavanger', 'Norway')", insert.getValues(query));
     }
 
-    @org.junit.jupiter.api.Test
-    void select() {
+    @Test
+    public void select() {
         SelectParser select = new SelectParser();
         String query = " SELECT CustomerName , City FROM Customers ; ";
         try {
@@ -115,8 +117,8 @@ class ParserTest {
         assertEquals("*", select.getColumns(query));
     }
 
-    @org.junit.jupiter.api.Test
-    void update() {
+    @Test
+    public void update() {
         UpdateParser update = new UpdateParser();
         String query = " uPDATE Customers SET ContactName='Juan' WHERE Country='Mexico' ; ";
         try {
