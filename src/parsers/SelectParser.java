@@ -66,11 +66,12 @@ public class SelectParser implements ICollectionParser {
 
     private List<String> getFieldNames() {
         List<String> names = new ArrayList<>();
-        if (columns == "*")
+        if (columns.contains("*"))
             return names;
         String[] fields = columns.split(",");
         for (String str : fields) {
             names.add(str.trim());
+            System.out.println(str.trim());
         }
         return names;
     }

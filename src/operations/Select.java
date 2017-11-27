@@ -51,19 +51,21 @@ public class Select implements IDataOperation {
         TableXML table = new TableXML(database.getName(), tableName);
         List<IRecord> records = table.select(myCondition);
         List<IField> fields = table.getFields();
-        Object[][] result = new Object[records.size()][fieldsName.size()];
         if(fieldsName.size() == 0) {
             this.fieldsName.clear();
             for( int j = 0; j < fields.size(); j++)
                 this.fieldsName.add(fields.get(j).getName());
         }
+        Object[][] result = new Object[records.size()][fieldsName.size()];
         if(notVaild(fields)){
             throw  null;
         }
         for(int i = 0; i < records.size(); i++) {
+            IRecord record = records.get(i);
             for( int j = 0; j < fields.size(); j++) {
-                if(find(fields.get(j).getName())) {
-                    result[i][j] = records.get(i).getAttribute(fields.get(j).getName());
+                String fieldName = fields.get(j).getName();
+                if(find(fieldName)) {
+                    result[i][j] = record.getAttribute(fieldName);
                 }
             }
         }
