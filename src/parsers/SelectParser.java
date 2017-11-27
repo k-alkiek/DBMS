@@ -22,7 +22,7 @@ public class SelectParser implements ICollectionParser {
             columns = getColumns(query);
             IConditionParser conditionParser = new ConditionParser();
             ICondition cond = conditionParser.parse(condition);
-            IDataOperation select = new Select(cond, tableName, "");
+            IDataOperation select = new Select(cond, tableName, "", getFieldNames());
             return select.execute();
         } else {
             throw new SQLException("invalid Query");
