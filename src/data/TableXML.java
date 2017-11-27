@@ -24,7 +24,7 @@ public class TableXML implements ITable {
     public TableXML(String databaseName, String name) {
         this.databaseName = databaseName;
         this.name = name;
-        initializeTableFiles();
+//        initializeTableFiles();
     }
 
     @Override

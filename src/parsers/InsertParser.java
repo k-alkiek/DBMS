@@ -72,13 +72,10 @@ public class InsertParser implements IIntegerParser {
     }
 
     private List<String> getFieldNames() {
-        System.out.println(columns);
         List<String> value = new ArrayList<>();
         String[] fields = columns.trim().split(",");
-        System.out.println(tableName);
         for (int i = 0; i < fields.length; i++) {
             value.add(fields[i].trim());
-            System.out.println(fields[i].trim());
         }
         return value;
     }
@@ -86,10 +83,8 @@ public class InsertParser implements IIntegerParser {
     private List<String> getRealValues() {
         List<String> value = new ArrayList<>();
         String[] inputs = values.trim().split(",");
-        System.out.println("values");
         for (int i = 0; i < inputs.length; i++) {
             value.add(inputs[i].trim().replaceAll("'", ""));
-            System.out.println(inputs[i].trim().replaceAll("'", ""));
         }
         return value;
     }
