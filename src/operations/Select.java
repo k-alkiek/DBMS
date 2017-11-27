@@ -51,7 +51,7 @@ public class Select implements IDataOperation {
         List<IRecord> records = table.select(myCondition);
         List<IField> fields = table.getFields();
         Object[][] result = new Object[records.size()][fieldsName.size()];
-        if(fieldsName.get(0).equals("*")) {
+        if(fieldsName.size() == 0) {
             this.fieldsName.clear();
             for( int j = 0; j < fields.size(); j++)
                 this.fieldsName.add(fields.get(j).getName());
