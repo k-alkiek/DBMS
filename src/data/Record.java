@@ -2,6 +2,7 @@ package data;
 
 import data.Exceptions.InvalidDataTypeException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ public class Record implements IRecord {
     private ITable table;
 
     public Record(ITable table, List<String> fieldNames, List<Object> values) {
+        fields = new HashMap<>();
         this.table = table;
         if (fieldNames.size() != values.size()) {
             throw new RuntimeException();
@@ -20,6 +22,12 @@ public class Record implements IRecord {
 
         for (int i = 0; i < fieldNames.size(); i++) {
             setAttribute(fieldNames.get(i), values.get(i));
+        }
+
+        for (IField field : table.getFields()) {
+            if (!fields.containsKey(field.getName())) {
+                setAttribute(field.getName(), field.getDefault());
+            }
         }
     }
 

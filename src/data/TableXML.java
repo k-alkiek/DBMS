@@ -136,7 +136,43 @@ public class TableXML implements ITable {
 
     private List<IRecord> getRecords() {
         List<IRecord> records = new ArrayList<>();
-        //TODO read records from XML
+
+        try {
+            File inputFile = new File(xmlPath());
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            NodeList recordList = doc.getElementsByTagName("record");
+
+            for (int i = 0; i < recordList.getLength(); i++) {
+                Node recordElement = recordList.item(i);
+
+                if (recordElement.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) recordElement;
+
+                    NodeList fieldList = eElement.getElementsByTagName("field");
+                    List<String> fieldNames = new ArrayList<>();
+                    List<Object> values = new ArrayList<>();
+
+                    for (int count = 0; count < fieldList.getLength(); count++) {
+                        Node fieldElement = fieldList.item(count);
+
+                        if (fieldElement.getNodeType() == fieldElement.ELEMENT_NODE) {
+                            Element field = (Element) fieldElement;
+                            fieldNames.add(field.getAttribute("name"));
+                            values.add(field.getTextContent());
+                        }
+                    }
+
+                    IRecord record = new Record(this, fieldNames, values);
+                    records.add(record);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return records;
     }
 
@@ -149,20 +185,21 @@ public class TableXML implements ITable {
             Element tableElement = doc.createElement("table");
             doc.appendChild(tableElement);
 
-            Attr tableNameAttrubute = doc.createAttribute("name");
-            tableNameAttrubute.setValue(this.name);
-            tableElement.setAttributeNode(tableNameAttrubute);
+            Attr tableNameAttribute = doc.createAttribute("name");
+            tableNameAttribute.setValue(this.name);
+            tableElement.setAttributeNode(tableNameAttribute);
 
             for (IRecord record : records) {
                 Element recordElement = doc.createElement("record");
-                doc.appendChild(recordElement );
+                tableElement.appendChild(recordElement);
 
 
                 for (IField field : getFields()) {
+
                     Object cell = record.getAttribute(field.getName());
 
                     Element fieldElement = doc.createElement("field");
-                    tableElement.appendChild(fieldElement);
+                    recordElement.appendChild(fieldElement);
 
                     Attr nameAttribute = doc.createAttribute("name");
                     nameAttribute.setValue(field.getName());
@@ -171,8 +208,7 @@ public class TableXML implements ITable {
                     Attr classAttribute = doc.createAttribute("class");
                     classAttribute.setValue(field.getClass().getSimpleName());
                     fieldElement.setAttributeNode(classAttribute);
-
-                    tableElement.appendChild(doc.createTextNode(cell.toString()));
+                    fieldElement.appendChild(doc.createTextNode(cell.toString()));
                 }
             }
 

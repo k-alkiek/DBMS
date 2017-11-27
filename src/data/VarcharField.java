@@ -10,7 +10,7 @@ public class VarcharField implements IField {
 
     public VarcharField(String name) {
         this.name = name;
-        setDefault(new Object());
+        setDefault("");
     }
 
     public VarcharField(String name, Object defaultValue) {
@@ -21,6 +21,11 @@ public class VarcharField implements IField {
     @Override
     public void setDefault(Object defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    @Override
+    public Object getDefault() {
+        return defaultValue;
     }
 
     @Override
