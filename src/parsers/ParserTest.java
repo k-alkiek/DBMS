@@ -1,5 +1,7 @@
 package parsers;
 
+import data.Database;
+import eg.edu.alexu.csd.oop.db.cs15.DatabaseImp;
 import org.junit.Test;
 
 import java.sql.SQLException;
@@ -38,6 +40,17 @@ public class ParserTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        query = "SELECT * FROM Persons ";
+        DatabaseImp imp = new DatabaseImp();
+
+        try {
+            Object[][] objects = imp.executeQuery(query);
+            System.out.println(objects);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
 //        assertEquals("Persons", create.getTableName(query));
 //        assertEquals("PersonID int, LastName varchar, FirstName varchar, Address varchar, City varchar",
 //                create.getFields(query));
