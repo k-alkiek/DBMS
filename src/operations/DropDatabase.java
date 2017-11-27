@@ -8,7 +8,9 @@ import data.Exceptions.DatabaseNotFoundException;
  */
 public class DropDatabase implements IBooleanOperation{
     private String databaseName;
-    void setDatabaseName(String databaseName){ databaseName =databaseName; }
+    public DropDatabase(String databaseName) {
+        this.databaseName = databaseName;
+    }
 
     @Override
     public boolean execute() {

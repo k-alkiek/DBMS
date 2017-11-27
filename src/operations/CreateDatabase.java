@@ -7,8 +7,9 @@ import data.DatabaseManager;
  */
 public class CreateDatabase implements IBooleanOperation{
     private String databaseName;
-    void setDatabaseName(String databaseName) {  this.databaseName = databaseName;   }
-
+    public  CreateDatabase(String databaseName) {
+        this.databaseName = databaseName;
+    }
     @Override
     public boolean execute() {
         DatabaseManager manager = new DatabaseManager();
