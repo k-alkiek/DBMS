@@ -1,5 +1,7 @@
 package data;
 
+import query.ICondition;
+
 import java.util.List;
 
 /**

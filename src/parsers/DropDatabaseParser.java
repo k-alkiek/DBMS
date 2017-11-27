@@ -1,5 +1,8 @@
 package parsers;
 
+import operations.DropDatabase;
+import operations.IBooleanOperation;
+
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
@@ -11,7 +14,8 @@ public class DropDatabaseParser implements IBooleanParser {
     @Override
     public boolean parse(String query) throws SQLException {
         if (isValidateQuery(query)) {
-            return false;
+            IBooleanOperation drop = new DropDatabase(getDataBaseName(query));
+            return drop.execute();
         } else {
             throw new SQLException("invalid query");
         }
