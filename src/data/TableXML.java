@@ -28,11 +28,29 @@ public class TableXML implements ITable {
 
     @Override
     public boolean insert(IRecord record) {
-        return false;
+        List<IField> fields = getFields();
+        /*for (int i = 0; i < fields.size(); i++){
+            Object value = record.getAttribute(fields.get(i).getName());
+            String data = String.valueOf(value);
+            if(data.matches("^-?\\d+$")&&fields.get(i).getType().getSimpleName().equals("IntField")) {
+            }
+            else if (!data.matches("^-?\\d+$")&&fields.get(i).getType().getSimpleName().equals("VarcharField")) {
+            }
+            else
+                return  false;
+        }*/
+        List<IRecord> allRecords = getRecords();
+        allRecords.add(record);
+        setRecords(allRecords);
+        return true;
     }
 
     @Override
     public List<IRecord> select(ICondition condition) {
+
+
+
+
         return null;
     }
 
@@ -42,7 +60,7 @@ public class TableXML implements ITable {
     }
 
     @Override
-    public int update(ICondition condition, IRecord record) {
+    public int update(ICondition condition, List<String> fieldNams, List<String> values) {
         return 0;
     }
 
