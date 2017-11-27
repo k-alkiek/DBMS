@@ -9,8 +9,8 @@ public class BiggerThanOrEqualCondition implements ICondition {
 
     @Override
     public boolean validate(IRecord record) {
-     return orCondition.validate(record);
-   }
+        return orCondition.validate(record);
+    }
 
     public BiggerThanOrEqualCondition(String fieldName, Object data) {
         equalCondition = new EqualCondition(fieldName, data);
