@@ -76,8 +76,20 @@ public class TableXML implements ITable {
     }
 
     @Override
-    public int update(ICondition condition, List<String> fieldNams, List<String> values) {
-        return 0;
+    public int update(ICondition condition, List<String> fieldNames, List<String> values) {
+        List<IRecord> records = getRecords();
+        int count = 0;
+        
+        for (IRecord record : records) {
+            if (condition.validate(record)) {
+                count++;
+                for (int i = 0; i < fieldNames.size(); i++) {
+                    record.setAttribute(fieldNames.get(i), values.get(i));
+                }
+            }
+        }
+        setRecords(records);
+        return count;
     }
 
     @Override
