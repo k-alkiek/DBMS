@@ -10,8 +10,7 @@ public class EqualCondition implements ICondition {
     public boolean validate(IRecord record) {
         Object recordData;
         try {
-            recordData = record.getAttribute(fieldName);
-            return data.equals(recordData);
+            return data.equals(record.getAttribute(fieldName));
         } catch (Exception e) {
             return false;
         }
