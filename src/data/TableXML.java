@@ -47,11 +47,15 @@ public class TableXML implements ITable {
 
     @Override
     public List<IRecord> select(ICondition condition) {
+        List<IRecord> records = this.getRecords();
+        List<IRecord> result = new ArrayList<>();
+        for(int i = 0; i < records.size(); i++) {
+            if (condition.validate(records.get(i))) {
+                result.add(records.get(i));
+            }
+        }
 
-
-
-
-        return null;
+        return result;
     }
 
     @Override

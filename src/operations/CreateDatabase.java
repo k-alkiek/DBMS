@@ -12,7 +12,7 @@ public class CreateDatabase implements IBooleanOperation{
     }
     @Override
     public boolean execute() {
-        DatabaseManager manager = new DatabaseManager();
+        DatabaseManager manager = DatabaseManager.getInstance();
         manager.createDatabase(databaseName);
         return  true;
 

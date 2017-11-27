@@ -25,7 +25,7 @@ public class Insert implements IBooleanOperation {
 
     @Override
     public boolean execute() {
-        IDatabaseManager manager = new DatabaseManager();
+        DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
         TableXML table = new TableXML(database.getName(), tableName);
         List<Object> objectValue = new ArrayList<Object>(values);

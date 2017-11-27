@@ -45,7 +45,7 @@ public class Select implements IDataOperation {
     }
     @Override
     public Object[][] execute() {
-        IDatabaseManager manager = new DatabaseManager();
+        DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
         TableXML table = new TableXML(database.getName(), tableName);
         List<IRecord> records = table.select(myCondition);
