@@ -19,12 +19,32 @@ public class Update implements IIntegerOperation {
         this.values = values;
         myCondition = condition;
     }
-
+    public boolean notVaild(List<IField> listOfFields) {
+        for(int i = 0; i < fieldNams.size(); i++)
+        {
+            int flag = 0;
+            for(int j = 0; j < listOfFields.size(); j++)
+            {
+                if(listOfFields.get(j).getName().equals(fieldNams.get(i)))
+                {
+                    flag = 1;
+                }
+            }
+            if(flag == 0)
+            {
+                return  true;
+            }
+        }
+        return  false;
+    }
     @Override
     public int execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
         TableXML table = new TableXML(database.getName(), tableName);
+        if(notVaild(table.getFields())) {
+            throw  null;
+        }
        return table.update(myCondition, fieldNams, values);
     }
 }

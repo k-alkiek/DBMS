@@ -57,7 +57,7 @@ public class Select implements IDataOperation {
                 this.fieldsName.add(fields.get(j).getName());
         }
         if(notVaild(fields)){
-            return null;
+            throw  null;
         }
         for(int i = 0; i < records.size(); i++) {
             for( int j = 0; j < fields.size(); j++) {
