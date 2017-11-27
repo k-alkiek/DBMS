@@ -9,6 +9,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class TableXML implements ITable {
     public TableXML(String databaseName, String name) {
         this.databaseName = databaseName;
         this.name = name;
+        initializeTableFiles();
     }
 
     @Override
@@ -125,6 +127,66 @@ public class TableXML implements ITable {
             if (field.getName().equals(currentField.getName())) return true;
         }
         return false;
+    }
+
+    private void initializeTableFiles() {
+        setRecords(new ArrayList<>());
+        setFields(new ArrayList<>());
+    }
+
+    private List<IRecord> getRecords() {
+        List<IRecord> records = new ArrayList<>();
+        //TODO read records from XML
+        return records;
+    }
+
+    private void setRecords(List<IRecord> records) {
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.newDocument();
+
+            Element tableElement = doc.createElement("table");
+            doc.appendChild(tableElement);
+
+            Attr tableNameAttrubute = doc.createAttribute("name");
+            tableNameAttrubute.setValue(this.name);
+            tableElement.setAttributeNode(tableNameAttrubute);
+
+            for (IRecord record : records) {
+                Element recordElement = doc.createElement("record");
+                doc.appendChild(recordElement );
+
+
+                for (IField field : getFields()) {
+                    ICell cell = record.getAttribute(field.getName());
+
+                    Element fieldElement = doc.createElement("field");
+                    tableElement.appendChild(fieldElement);
+
+                    Attr nameAttribute = doc.createAttribute("name");
+                    nameAttribute.setValue(field.getName());
+                    fieldElement.setAttributeNode(nameAttribute);
+
+                    Attr classAttribute = doc.createAttribute("class");
+                    classAttribute.setValue(field.getClass().getSimpleName());
+                    fieldElement.setAttributeNode(classAttribute);
+
+                    tableElement.appendChild(doc.createTextNode(cell.getData().toString()));
+                }
+            }
+
+            // write the content into xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            String path = xmlPath();
+            StreamResult result = new StreamResult(new File(path));
+            transformer.transform(source, result);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private String schemaPath() {
