@@ -145,8 +145,8 @@ public class TableCachedXml implements ITable {
     }
 
     private void initializeTableFiles() {
-        setRecords(new ArrayList<>());
-        setFields(new ArrayList<>());
+        setRecords(new ArrayList<IRecord>());
+        setFields(new ArrayList<IField>());
     }
 
     private List<IRecord> getRecords() {
