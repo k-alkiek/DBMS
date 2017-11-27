@@ -41,10 +41,6 @@ public class Insert implements IIntegerOperation {
                     flag = 1;
                 }
             }
-            if(flag == 0)
-            {
-                throw  null;
-            }
         }
         table.insert(record);
         return 1;

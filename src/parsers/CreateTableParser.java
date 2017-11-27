@@ -15,6 +15,7 @@ public class CreateTableParser implements IBooleanParser {
     @Override
     public boolean parse(String query) throws SQLException, IllegalAccessException, InstantiationException {
         if (isValidQuery(query)) {
+            fields = getFields(query);
             getAtrributes();
             IBooleanOperation create = new CreateTable(getTableName(query), "",
                     fieldNames, dataTypes);
@@ -48,9 +49,10 @@ public class CreateTableParser implements IBooleanParser {
         fieldNames = new String[columns.length];
         dataTypes = new String[columns.length];
         for (int i = 0; i < columns.length; i++) {
-            String[] attr = columns[i].split("\\s+");
+            String[] attr = columns[i].trim().split("\\s+");
             fieldNames[i] = attr[0].trim();
             dataTypes[i] = attr[1].trim();
+//            System.out.println(fieldNames[i] + " " + dataTypes[i]);
         }
     }
 }

@@ -12,15 +12,15 @@ import java.util.regex.Pattern;
  * Created by khaled on 11/22/17.
  */
 public class InsertParser implements IIntegerParser {
-    private String columns, values;
+    private String columns, values, tableName;
     private int firstIdx, secondIdx;
     @Override
     public int parse(String query) throws SQLException {
         if(isValidQuery(query)) {
+            tableName = getTableName(query);
             columns = getColumns(query);
             values = getValues(query);
-            IIntegerOperation insert = new Insert(getTableName(query),
-                    getFieldNames(), getRealValues());
+            IIntegerOperation insert = new Insert(tableName, getFieldNames(), getRealValues());
             return insert.execute();
         } else {
             throw new SQLException("invalid Query");
@@ -30,7 +30,6 @@ public class InsertParser implements IIntegerParser {
     public String getTableName(String query) {
         query = query.trim();
         String tableName = query.split("\\s+")[2];
-        firstIdx = query.lastIndexOf(tableName) + tableName.length() + 2;
         return tableName;
     }
 
@@ -38,6 +37,7 @@ public class InsertParser implements IIntegerParser {
         secondIdx = query.toLowerCase().lastIndexOf("values");
         if (columns.equals("*"))
             return columns;
+        firstIdx = query.lastIndexOf(tableName) + tableName.length() + 2;
         columns = query.substring(firstIdx, secondIdx);
         columns = columns.replaceAll("(\\()", "");
         columns = columns.replaceAll("(\\))", "");
@@ -72,19 +72,24 @@ public class InsertParser implements IIntegerParser {
     }
 
     private List<String> getFieldNames() {
+        System.out.println(columns);
         List<String> value = new ArrayList<>();
-        String[] fields = columns.split(",");
+        String[] fields = columns.trim().split(",");
+        System.out.println(tableName);
         for (int i = 0; i < fields.length; i++) {
             value.add(fields[i].trim());
+            System.out.println(fields[i].trim());
         }
         return value;
     }
 
     private List<String> getRealValues() {
         List<String> value = new ArrayList<>();
-        String[] inputs = values.split(",");
+        String[] inputs = values.trim().split(",");
+        System.out.println("values");
         for (int i = 0; i < inputs.length; i++) {
-            value.add(inputs[i].trim());
+            value.add(inputs[i].trim().replaceAll("'", ""));
+            System.out.println(inputs[i].trim().replaceAll("'", ""));
         }
         return value;
     }

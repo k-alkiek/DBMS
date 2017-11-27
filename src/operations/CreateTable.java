@@ -15,6 +15,7 @@ public class CreateTable implements IBooleanOperation {
 
         this.tableName = tableName;
         this.databaseName = databaseName;
+        myFields = new IField[fieldName.length];
         for(int i = 0; i < fieldName.length; i++) {
             myFields[i] = FieldsFactory.create(types[i], fieldName[i]);
         }
