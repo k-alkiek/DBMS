@@ -1,5 +1,8 @@
 package parsers;
 
+import operations.CreateTable;
+import operations.IBooleanOperation;
+
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
@@ -8,10 +11,14 @@ import java.util.regex.Pattern;
  */
 public class CreateTableParser implements IBooleanParser {
     private String fields;
+    private String[] fieldNames, dataTypes;
     @Override
-    public boolean parse(String query) throws SQLException {
+    public boolean parse(String query) throws SQLException, IllegalAccessException, InstantiationException {
         if (isValidQuery(query)) {
-            return true;
+            getAtrributes();
+            IBooleanOperation create = new CreateTable(getTableName(query), "",
+                    fieldNames, dataTypes);
+            return create.execute();
         } else {
             throw new SQLException("invalid Query");
         }
@@ -34,5 +41,16 @@ public class CreateTableParser implements IBooleanParser {
             return true;
         }
         return false;
+    }
+
+    private void getAtrributes() {
+        String[] columns = fields.split(",");
+        fieldNames = new String[columns.length];
+        dataTypes = new String[columns.length];
+        for (int i = 0; i < columns.length; i++) {
+            String[] attr = columns[i].split("\\s+");
+            fieldNames[i] = attr[0].trim();
+            dataTypes[i] = attr[1].trim();
+        }
     }
 }

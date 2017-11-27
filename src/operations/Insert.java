@@ -38,7 +38,7 @@ public class Insert implements IIntegerOperation {
             {
                 if(listOfFields.get(j).getName().equals(fieldNams.get(i)))
                 {
-                   flag = 1;
+                    flag = 1;
                 }
             }
             if(flag == 0)

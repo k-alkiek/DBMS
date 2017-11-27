@@ -1,6 +1,11 @@
 package parsers;
 
+import operations.IIntegerOperation;
+import operations.Insert;
+
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -12,7 +17,11 @@ public class InsertParser implements IIntegerParser {
     @Override
     public int parse(String query) throws SQLException {
         if(isValidQuery(query)) {
-            return 0;
+            columns = getColumns(query);
+            values = getValues(query);
+            IIntegerOperation insert = new Insert(getTableName(query),
+                    getFieldNames(), getRealValues());
+            return insert.execute();
         } else {
             throw new SQLException("invalid Query");
         }
@@ -60,5 +69,23 @@ public class InsertParser implements IIntegerParser {
             return true;
         }
         return false;
+    }
+
+    private List<String> getFieldNames() {
+        List<String> value = new ArrayList<>();
+        String[] fields = columns.split(",");
+        for (int i = 0; i < fields.length; i++) {
+            value.add(fields[i].trim());
+        }
+        return value;
+    }
+
+    private List<String> getRealValues() {
+        List<String> value = new ArrayList<>();
+        String[] inputs = values.split(",");
+        for (int i = 0; i < inputs.length; i++) {
+            value.add(inputs[i].trim());
+        }
+        return value;
     }
 }

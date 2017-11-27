@@ -1,5 +1,9 @@
 package parsers;
 
+import operations.DeleteFromTable;
+import operations.IIntegerOperation;
+import query.ICondition;
+
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
@@ -11,7 +15,10 @@ public class DeleteParser implements IIntegerParser {
     @Override
     public int parse(String query) throws SQLException {
         if (isValidQuery(query)) {
-            return 0;
+            IConditionParser conditionParser = new ConditionParser();
+            ICondition cond = conditionParser.parse(getCondition(query));
+            IIntegerOperation delete = new DeleteFromTable(tableName, cond);
+            return delete.execute();
         } else {
             throw new SQLException("invalid Query");
         }
@@ -22,14 +29,17 @@ public class DeleteParser implements IIntegerParser {
     }
 
     public String getCondition(String query) {
-        return condition.trim();
+        condition = condition.trim();
+        if (condition.equals("*"))
+            return condition;
+        return condition;
     }
     private boolean isValidQuery(String query) {
         if (Pattern.matches("(?i)\\s*(DELETE)\\s+(FROM)\\s+\\w+\\s+(WHERE)\\s+.+\\s*(;)?\\s*", query)) {
             query = query.trim();
             tableName = query.split("\\s+")[2];
             int firstIdx = query.toLowerCase().lastIndexOf("where") + 6;
-            condition = query.substring(firstIdx, query.lastIndexOf(";"));
+            condition = query.substring(firstIdx);
             return true;
         } else if (Pattern.matches("(?i)\\s*(DELETE)\\s+(\\*)\\s+(FROM)\\s+\\w+\\s*(;)?\\s*", query)) {
             query = query.trim();

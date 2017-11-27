@@ -1,17 +1,31 @@
 package parsers;
 
+import operations.IIntegerOperation;
+import operations.Update;
+import query.ICondition;
+
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
  * Created by khaled on 11/22/17.
  */
 public class UpdateParser implements IIntegerParser {
-    private String condition, inputs;
+    private String condition, inputs, fieldName, value;
+    private List<String> fieldNames, valuesArgs;
     @Override
     public int parse(String query) throws SQLException {
         if(isValidQuery(query)) {
-            return 0;
+            String tableName = getTableName(query);
+            inputs = getInputs();
+            condition = getCondition();
+            IConditionParser conditionParser = new ConditionParser();
+            ICondition cond = conditionParser.parse(condition);
+            getAttr();
+            IIntegerOperation update = new Update(tableName, fieldNames, valuesArgs, cond);
+            return update.execute();
         } else {
             throw new SQLException("invalid Query");
         }
@@ -23,10 +37,15 @@ public class UpdateParser implements IIntegerParser {
     }
 
     public String getCondition() {
-        return condition.trim();
+        condition = condition.trim();
+        if (condition.equals("*"))
+            return condition;
+        return condition;
     }
 
     public String getInputs() {
+        inputs.replaceAll("(\\()", "");
+        inputs.replaceAll("(\\))", "");
         return inputs.trim();
     }
 
@@ -51,5 +70,16 @@ public class UpdateParser implements IIntegerParser {
         }
         int firstIdx = query.toLowerCase().lastIndexOf("set") + 4;
         inputs = query.substring(firstIdx, secondIdx);
+    }
+
+    private void getAttr() {
+        fieldNames = new ArrayList<>();
+        valuesArgs = new ArrayList<>();
+        String[] attr = inputs.split(",");
+        for (int i = 0; i < attr.length; i ++) {
+            String[] attributes = condition.split("=");
+            fieldNames.add(attributes[0]);
+            valuesArgs.add(attributes[1]);
+        }
     }
 }

@@ -2,14 +2,11 @@ package operations;
 
 import data.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DeleteFromTable implements IIntegerOperation {
-    private ICondition myCondition;
+    private query.ICondition myCondition;
     private String tableName;
 
-    public DeleteFromTable(String tableName, ICondition condition) {
+    public DeleteFromTable(String tableName, query.ICondition condition) {
         this.tableName = tableName;
         myCondition = condition;
     }

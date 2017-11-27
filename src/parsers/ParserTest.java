@@ -19,6 +19,10 @@ public class ParserTest {
             create.parse(query);
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
         }
         assertEquals("Persons", create.getTableName(query));
         assertEquals("PersonID int, LastName varchar, FirstName varchar, Address varchar, City varchar",
@@ -40,7 +44,7 @@ public class ParserTest {
     @Test
     public void delete() {
         DeleteParser delete = new DeleteParser();
-        String query = "DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste' ; ";
+        String query = "DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste'  ";
         try {
             delete.parse(query);
         } catch (SQLException e) {
@@ -123,6 +127,15 @@ public class ParserTest {
         }
         assertEquals("DB", select.getTableName(query));
         assertEquals("*", select.getColumns(query));
+        query = " SELECT * FROM Customers WHERE CustomerID=1 ";
+        try {
+            select.parse(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        assertEquals("Customers", select.getTableName(query));
+        assertEquals("*", select.getColumns(query));
+        assertEquals("CustomerID=1", select.condition);
     }
 
     @Test

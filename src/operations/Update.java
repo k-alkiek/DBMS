@@ -1,6 +1,7 @@
 package operations;
 
 import data.*;
+import query.ICondition;
 
 import java.util.ArrayList;
 import java.util.List;

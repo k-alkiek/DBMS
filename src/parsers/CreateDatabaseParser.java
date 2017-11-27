@@ -1,5 +1,8 @@
 package parsers;
 
+import operations.CreateDatabase;
+import operations.IBooleanOperation;
+
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
@@ -11,7 +14,8 @@ public class CreateDatabaseParser implements IBooleanParser {
     @Override
     public boolean parse(String query) throws SQLException {
         if (isValidateQuery(query)) {
-            return false;
+            IBooleanOperation create = new CreateDatabase(getDataBaseName(query));
+            return create.execute();
         } else {
             throw new SQLException("invalid query");
         }
