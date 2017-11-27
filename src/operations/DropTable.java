@@ -12,13 +12,10 @@ import data.IDatabaseManager;
 public class DropTable implements IBooleanOperation {
     private String tableName;
     private String databaseName;
-
-    void setTableName(String tableName) {
+    public DropTable (String tableName, String databaseName) {
         this.tableName = tableName;
-    }
-
-    void setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
+
     }
 
     @Override
