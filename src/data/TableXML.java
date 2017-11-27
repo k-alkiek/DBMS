@@ -27,7 +27,7 @@ public class TableXML implements ITable {
     }
 
     @Override
-    public boolean insert(IRecord record) {
+    public int insert(IRecord record) {
         List<IField> fields = getFields();
         /*for (int i = 0; i < fields.size(); i++){
             Object value = record.getAttribute(fields.get(i).getName());
@@ -42,7 +42,7 @@ public class TableXML implements ITable {
         List<IRecord> allRecords = getRecords();
         allRecords.add(record);
         setRecords(allRecords);
-        return true;
+        return 1;
     }
 
     @Override

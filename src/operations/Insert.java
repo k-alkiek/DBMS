@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by khaled on 11/20/17.
  */
-public class Insert implements IBooleanOperation {
+public class Insert implements IIntegerOperation {
     private IRecord record;
     private String tableName;
     List<String> fieldNams;
@@ -24,7 +24,7 @@ public class Insert implements IBooleanOperation {
     }
 
     @Override
-    public boolean execute() {
+    public int execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
         TableXML table = new TableXML(database.getName(), tableName);
@@ -43,10 +43,10 @@ public class Insert implements IBooleanOperation {
             }
             if(flag == 0)
             {
-                return  false;
+                throw  null;
             }
         }
         table.insert(record);
-        return true;
+        return 1;
     }
 }
