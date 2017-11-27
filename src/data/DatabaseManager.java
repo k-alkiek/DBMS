@@ -13,6 +13,10 @@ public class DatabaseManager implements IDatabaseManager {
 
     private static final String databasesPath = "databases/";
 
+    private DatabaseManager() {
+
+    }
+    
     public static DatabaseManager getInstance() {
         if (databaseManager == null) {
             databaseManager = new DatabaseManager();

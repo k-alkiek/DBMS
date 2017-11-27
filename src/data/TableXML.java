@@ -56,7 +56,18 @@ public class TableXML implements ITable {
 
     @Override
     public int delete(ICondition condition) {
-        return 0;
+        List<IRecord> records = getRecords();
+        int count = 0;
+
+        for (int i = 0; i < records.size(); i++) {
+            if (condition.validate(records.get(i))) {
+                records.remove(i);
+                count++;
+            }
+
+        }
+        setRecords(records);
+        return count;
     }
 
     @Override
