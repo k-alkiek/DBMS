@@ -33,14 +33,14 @@ public class ParserTest {
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
-        InsertParser insert = new InsertParser();
+       /* InsertParser insert = new InsertParser();
         query = "INSERT INTO Persons1 VaLUES (21, 'Stavanger', 'Norway') ";
         try {
             insert.parse(query);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        query = "SELECT * FROM Persons ";
+        }*/
+        query = "SELECT * FROM Persons1 ";
         DatabaseImp imp = new DatabaseImp();
 
         try {
