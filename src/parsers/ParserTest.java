@@ -23,7 +23,7 @@ public class ParserTest {
             e.printStackTrace();
         }
         CreateTableParser create = new CreateTableParser();
-        query = "CREATE TABLE Persons ( PersonID int, LastName varchar, FirstName varchar, Address varchar, City varchar) ;";
+        query = "CREATE TABLE Persons1 ( PersonID int, LastName varchar, FirstName varchar) ;";
         try {
             create.parse(query);
         } catch (SQLException e) {
@@ -34,7 +34,7 @@ public class ParserTest {
             e.printStackTrace();
         }
         InsertParser insert = new InsertParser();
-        query = "INSERT INTO Persons (PersonID, LastName, FirstName) VaLUES (21, 'Stavanger', 'Norway') ";
+        query = "INSERT INTO Persons1 VaLUES (21, 'Stavanger', 'Norway') ";
         try {
             insert.parse(query);
         } catch (SQLException e) {
@@ -45,7 +45,7 @@ public class ParserTest {
 
         try {
             Object[][] objects = imp.executeQuery(query);
-            System.out.println(objects);
+            System.out.println(objects.length);
         } catch (SQLException e) {
             e.printStackTrace();
         }
