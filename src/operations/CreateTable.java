@@ -1,17 +1,28 @@
 package operations;
 
-import data.IDatabase;
-import data.IField;
+import data.*;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 /**
  * Created by khaled on 11/20/17.
  */
 public class CreateTable implements IBooleanOperation {
-    void setTableName(String tableName){ }
-    void setFields(IField[] fields){ }
-    void setDatabaseName(String databaseName){ }
+    private String tableName;
+    private String databaseName;
+    private IField[] fileds;
+    void setTableName(String tableName){ this.tableName = tableName; }
+    void setFields(IField[] fields){ this.fileds = fields; }
+    void setDatabaseName(String databaseName){
+
+        this.databaseName = databaseName;
+    }
     @Override
     public boolean execute() {
-        return false;
+        IDatabaseManager manger = new DatabaseManager();
+        IDatabase database = manger.getDatabaseInUse();
+        database.createTable(tableName, Arrays.asList(fileds));
+        return true;
     }
 }

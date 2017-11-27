@@ -1,5 +1,7 @@
 package data;
 
+import data.Exceptions.InvalidDataTypeException;
+
 /**
  * Created by khaled on 11/22/17.
  */

@@ -31,13 +31,14 @@ public class UpdateParser implements IIntegerParser {
     }
 
     private boolean isValidQuery(String query) {
-        if(Pattern.matches("(?i)\\s*(UPDATE)\\s+\\w+\\s+(SET)\\s+.+\\s+(WHERE)\\s+.+\\s*(;)\\s*", query)) {
+        query = query.trim();
+        if(Pattern.matches("(?i)\\s*(UPDATE)\\s+\\w+\\s+(SET)\\s+.+\\s+(WHERE)\\s+.+\\s*(;)?\\s*", query)) {
             int secondIdx = query.toLowerCase().lastIndexOf("where") + 6;
             calculateArgs(query, secondIdx - 7);
-            condition = query.substring(secondIdx, query.lastIndexOf(";"));
+            condition = query.substring(secondIdx, query.length());
             return true;
-        } else if(Pattern.matches("(?i)\\s*(UPDATE)\\s+\\w+\\s+(SET)\\s+.+(;)\\s*", query)) {
-            calculateArgs(query, query.lastIndexOf(";"));
+        } else if(Pattern.matches("(?i)\\s*(UPDATE)\\s+\\w+\\s+(SET)\\s+.+(;)?\\s*", query)) {
+            calculateArgs(query, query.length() - 1);
             condition = "*";
             return true;
         }
@@ -45,6 +46,9 @@ public class UpdateParser implements IIntegerParser {
     }
 
     private void calculateArgs(String query, int secondIdx) {
+        if (query.charAt(secondIdx) == ';') {
+            secondIdx--;
+        }
         int firstIdx = query.toLowerCase().lastIndexOf("set") + 4;
         inputs = query.substring(firstIdx, secondIdx);
     }
