@@ -27,7 +27,7 @@ public class CreateDatabaseParser implements IBooleanParser {
     }
 
     private boolean isValidateQuery(String query) {
-        if (Pattern.matches("(?i)\\s*(CREATE)\\s+(DATABASE)\\s+\\w+\\s*(;)\\s*", query)) {
+        if (Pattern.matches("(?i)\\s*(CREATE)\\s+(DATABASE)\\s+\\w+\\s*(;)?\\s*", query)) {
             return true;
         }
         return false;
