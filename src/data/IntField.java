@@ -1,26 +1,27 @@
 package data;
 
+
 /**
  * Created by khaled on 11/26/17.
  */
 public class IntField implements IField {
-    String name;
-    ICell defaultCell;
+    private String name;
+    private Object defaultValue;
 
 
     public IntField(String name) {
         this.name = name;
-        setDefault(new Cell(this, 0));
+        setDefault(new Object());
     }
 
-    public IntField(String name, ICell defaultCell) {
+    public IntField(String name, Object defaultValue) {
         this.name = name;
-        setDefault(defaultCell);
+        setDefault(defaultValue);
     }
 
     @Override
-    public void setDefault(ICell defaultCell) {
-        this.defaultCell = defaultCell;
+    public void setDefault(Object defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     @Override

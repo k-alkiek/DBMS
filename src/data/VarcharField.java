@@ -4,23 +4,23 @@ package data;
  * Created by khaled on 11/26/17.
  */
 public class VarcharField implements IField {
-    String name;
-    ICell defaultCell;
+    private String name;
+    private Object defaultValue;
 
 
     public VarcharField(String name) {
         this.name = name;
-        setDefault(new Cell(this, ""));
+        setDefault(new Object());
     }
 
-    public VarcharField(String name, ICell defaultCell) {
+    public VarcharField(String name, Object defaultValue) {
         this.name = name;
-        setDefault(defaultCell);
+        setDefault(defaultValue);
     }
 
     @Override
-    public void setDefault(ICell defaultCell) {
-        this.defaultCell = defaultCell;
+    public void setDefault(Object defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     @Override

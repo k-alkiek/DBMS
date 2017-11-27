@@ -9,26 +9,28 @@ import java.util.Map;
  * Created by khaled on 11/25/17.
  */
 public class Record implements IRecord {
-    Map<String, ICell> fields;
+    private Map<String, Object> fields;
+    private ITable table;
 
-    public Record(List<String> fieldNames, List<ICell> cells) {
-        if (fieldNames.size() != cells.size()) {
+    public Record(ITable table, List<String> fieldNames, List<Object> values) {
+        this.table = table;
+        if (fieldNames.size() != values.size()) {
             throw new RuntimeException();
         }
 
         for (int i = 0; i < fieldNames.size(); i++) {
-            setAttribute(fieldNames.get(i), cells.get(i));
+            setAttribute(fieldNames.get(i), values.get(i));
         }
     }
 
     @Override
-    public ICell getAttribute(String fieldName) {
-        return fields.get(fieldName);
+    public Object getAttribute(String fieldName) {
+        return fields.get(fieldName).toString();
     }
 
     @Override
-    public void setAttribute(String fieldName, ICell cell) {
-        fields.put(fieldName, cell);
+    public void setAttribute(String fieldName, Object value) {
+        fields.put(fieldName, value);
     }
 
 }

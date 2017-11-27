@@ -93,6 +93,15 @@ public class ParserTest {
         assertEquals("Customers", insert.getTableName(query));
         assertEquals("CustomerName, City, Country", insert.getColumns(query));
         assertEquals("'Cardinal', 'Stavanger', 'Norway'", insert.getValues(query));
+        query = " iNSERT InTO Customers VaLUES ('Cardinal', 'Stavanger', 'Norway')  ";
+        try {
+            insert.parse(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        assertEquals("Customers", insert.getTableName(query));
+        assertEquals("*", insert.getColumns(query));
+        assertEquals("'Cardinal', 'Stavanger', 'Norway'", insert.getValues(query));
     }
 
     @Test

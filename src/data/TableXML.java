@@ -159,7 +159,7 @@ public class TableXML implements ITable {
 
 
                 for (IField field : getFields()) {
-                    ICell cell = record.getAttribute(field.getName());
+                    Object cell = record.getAttribute(field.getName());
 
                     Element fieldElement = doc.createElement("field");
                     tableElement.appendChild(fieldElement);
@@ -172,7 +172,7 @@ public class TableXML implements ITable {
                     classAttribute.setValue(field.getClass().getSimpleName());
                     fieldElement.setAttributeNode(classAttribute);
 
-                    tableElement.appendChild(doc.createTextNode(cell.getData().toString()));
+                    tableElement.appendChild(doc.createTextNode(cell.toString()));
                 }
             }
 

@@ -1,6 +1,5 @@
 package query;
 
-import data.ICell;
 import data.IRecord;
 
 public class EqualCondition implements ICondition {
@@ -10,7 +9,7 @@ public class EqualCondition implements ICondition {
     public boolean validate(IRecord record) {
         Object recordData;
         try {
-            recordData = record.getAttribute(fieldName).getData();
+            recordData = record.getAttribute(fieldName);
             return data.equals(recordData);
         }
         catch (Exception e)

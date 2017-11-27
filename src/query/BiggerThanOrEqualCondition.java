@@ -8,7 +8,7 @@ public class BiggerThanOrEqualCondition implements ICondition {
     @Override
     public boolean validate(IRecord record) {
         try {
-            Object recordData = record.getAttribute(fieldName).getData();
+            Object recordData = record.getAttribute(fieldName);
             return ((Comparable)recordData).compareTo(data) >= 0;
         }
         catch (Exception e) {
