@@ -3,29 +3,18 @@ package query;
 import data.IRecord;
 
 public class SamllerThanOrEqualCondition implements ICondition {
-    private String fieldName;
-    private Object data;
+    private ICondition equalCondition;
+    private ICondition smallerCondition;
+    private ICondition orCondition;
+
     @Override
     public boolean validate(IRecord record) {
-        try {
-            Object recordData = record.getAttribute(fieldName);
-            return ((Comparable)recordData).compareTo(data) <= 0;
-        }
-        catch (Exception e) {
-            return false;
-        }
+        return orCondition.validate(record);
     }
 
     public SamllerThanOrEqualCondition(String fieldName, Object data) {
-        this.fieldName = fieldName;
-        this.data = data;
-    }
-
-    public void setField(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
+        equalCondition = new EqualCondition(fieldName, data);
+        smallerCondition = new SamllerThanCondition(fieldName, data);
+        orCondition = new OrConditonLinker(equalCondition, smallerCondition);
     }
 }
