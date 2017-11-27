@@ -3,6 +3,7 @@ package data;
 import data.Exceptions.DatabaseNotFoundException;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by khaled on 11/26/17.
@@ -10,13 +11,13 @@ import java.io.File;
 public class DatabaseManager implements IDatabaseManager {
     private IDatabase databaseInUse;
     private static DatabaseManager databaseManager;
-
+    public ArrayList<String> allDatabase = new ArrayList<>();
     private static final String databasesPath = "databases/";
 
     private DatabaseManager() {
 
     }
-    
+
     public static DatabaseManager getInstance() {
         if (databaseManager == null) {
             databaseManager = new DatabaseManager();
@@ -28,6 +29,7 @@ public class DatabaseManager implements IDatabaseManager {
     public IDatabase createDatabase(String databaseName) {
         new File(databasePath(databaseName)).mkdirs();
         databaseInUse = new Database(databaseName);
+        allDatabase.add(databaseName);
         return databaseInUse;
     }
 
