@@ -27,7 +27,7 @@ public class Select implements IDataOperation {
         Object[][] result = new Object[records.size()][fields.size()];
         for(int i = 0; i < records.size(); i++) {
             for(int j = 0; j < fields.size(); j++) {
-                result[i][j] = records.get(i).getAttribute(fields.get(j).getName()).getData();
+                result[i][j] = records.get(i).getAttribute(fields.get(j).getName());
             }
         }
         return  result;

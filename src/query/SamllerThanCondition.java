@@ -1,7 +1,5 @@
 package query;
 
-import data.ICell;
-import data.IField;
 import data.IRecord;
 
 public class SamllerThanCondition implements ICondition {
@@ -10,7 +8,7 @@ public class SamllerThanCondition implements ICondition {
     @Override
     public boolean validate(IRecord record) {
         try {
-            Object recordData = record.getAttribute(fieldName).getData();
+            Object recordData = record.getAttribute(fieldName);
             return ((Comparable)recordData).compareTo(data) == -1;
         }
         catch (Exception e) {

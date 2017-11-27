@@ -1,7 +1,5 @@
 package query;
 
-import data.ICell;
-import data.IField;
 import data.IRecord;
 
 public class BiggerThanCondition implements ICondition {
@@ -11,9 +9,10 @@ public class BiggerThanCondition implements ICondition {
     @Override
     public boolean validate(IRecord record) {
         try {
-            Object recordData = record.getAttribute(fieldName).getData();
-            return ((Comparable) recordData).compareTo(data) == 1;
-        } catch (Exception e) {
+            Object recordData = record.getAttribute(fieldName);
+            return ((Comparable)recordData).compareTo(data) == 1;
+        }
+        catch (Exception e) {
             return false;
         }
     }
