@@ -16,17 +16,17 @@ public class DatabaseImp implements Database {
     public String createDatabase(String databaseName, boolean dropIfExists) {
         if(dropIfExists){
             try {
-                executeStructureQuery("DROP "+databaseName);
+                executeStructureQuery("DROP DATABASE "+databaseName);
             } catch (SQLException e) { }
             finally {
                 try {
-                    executeStructureQuery("CREATE "+databaseName);
+                    executeStructureQuery("CREATE DATABASE "+databaseName);
                 } catch (SQLException e) {}
             }
         }
         else {
             try {
-                executeStructureQuery("CREATE "+databaseName);
+                executeStructureQuery("CREATE DATABASE "+databaseName);
             } catch (SQLException e) {}
         }
         return databaseManager.databasePath(databaseName);
