@@ -69,4 +69,7 @@ fabric.properties
 # Database folder
 /databases/
 
+# Database folder
+/Database/
+
 # End of https://www.gitignore.io/api/intellij

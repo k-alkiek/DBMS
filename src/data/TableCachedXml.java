@@ -25,7 +25,7 @@ public class TableCachedXml implements ITable {
         this.databaseName = databaseName;
         this.name = name;
         this.records = new ArrayList<>();
-        initializeTableFiles();
+//        initializeTableFiles();
     }
 
     @Override

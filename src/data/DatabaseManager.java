@@ -12,7 +12,7 @@ public class DatabaseManager implements IDatabaseManager {
     private IDatabase databaseInUse;
     private static DatabaseManager databaseManager;
     public ArrayList<String> allDatabase = new ArrayList<>();
-    private static final String databasesPath = "databases/";
+    private static final String databasesPath = "Database/";
 
     private DatabaseManager() {
 

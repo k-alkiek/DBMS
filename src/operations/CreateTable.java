@@ -2,7 +2,9 @@ package operations;
 
 import data.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by khaled on 11/20/17.
@@ -10,14 +12,14 @@ import java.util.Arrays;
 public class CreateTable implements IBooleanOperation {
     private String tableName;
     private String databaseName;
-    private IField[] myFields;
+    private List<IField> myFields;
     public CreateTable(String tableName, String databaseName, String[] fieldName, String[] types) throws InstantiationException, IllegalAccessException {
 
         this.tableName = tableName;
         this.databaseName = databaseName;
-        myFields = new IField[fieldName.length];
+        myFields = new ArrayList<>();
         for(int i = 0; i < fieldName.length; i++) {
-            myFields[i] = FieldsFactory.create(types[i], fieldName[i]);
+            myFields.add(FieldsFactory.create(types[i], fieldName[i]));
         }
     }
 
@@ -31,7 +33,7 @@ public class CreateTable implements IBooleanOperation {
         if (!foundDatabase)
             return  false;
         IDatabase database = manager.getDatabaseInUse();
-        database.createTable(tableName, Arrays.asList(myFields));
+        database.createTable(tableName, myFields);
         return true;
     }
 }
