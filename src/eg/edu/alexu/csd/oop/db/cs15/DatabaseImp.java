@@ -14,6 +14,7 @@ public class DatabaseImp implements Database {
     }
     @Override
     public String createDatabase(String databaseName, boolean dropIfExists) {
+      databaseName = databaseName.toLowerCase();
         if(dropIfExists){
             try {
                 executeStructureQuery("DROP DATABASE "+databaseName);
@@ -34,6 +35,7 @@ public class DatabaseImp implements Database {
 
     @Override
     public boolean executeStructureQuery(String query) throws SQLException {
+        query = query.toLowerCase();
         String modifiedQuery = query.trim().toLowerCase();
         IBooleanParser booleanParser = null;
         if(modifiedQuery.startsWith("create table")) {
@@ -48,18 +50,20 @@ public class DatabaseImp implements Database {
             booleanParser = new DropDatabaseParser();
         }
         else {
-            throw new SQLException();
+            return false;
         }
         try {
             return booleanParser.parse(query);
         }
         catch (Exception e) {
-            throw new SQLException();
+            return false;
         }
     }
 
     @Override
     public Object[][] executeQuery(String query) throws SQLException {
+        query = query.toLowerCase();
+
         ICollectionParser collectionParser = null;
         String modifiedQuery = query.trim().toLowerCase();
         if(modifiedQuery.startsWith("select"))
@@ -71,6 +75,8 @@ public class DatabaseImp implements Database {
 
     @Override
     public int executeUpdateQuery(String query) throws SQLException {
+        query = query.toLowerCase();
+
         IIntegerParser integerParser = null;
         String modifiedQuery = query.trim().toLowerCase();
         if(modifiedQuery.startsWith("insert")) {
