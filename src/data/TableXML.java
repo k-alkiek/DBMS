@@ -1,16 +1,17 @@
 package data;
 
 import org.w3c.dom.*;
+import org.xml.sax.InputSource;
 import query.ICondition;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,10 +107,25 @@ public class TableXML implements ITable {
         List<IField> fields = new ArrayList<>();
 
         try {
-            File inputFile = new File(schemaPath());
+
+            InputStream inputStream;
+            Reader reader = null;
+            try {
+                inputStream = new FileInputStream(xmlPath());
+                try {
+                    reader = new InputStreamReader(inputStream, "ISO-8859-1");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            InputSource is = new InputSource(reader);
+            is.setEncoding("ISO-8859-1");
+
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(inputFile);
+            Document doc = dBuilder.parse(is);
             doc.getDocumentElement().normalize();
 
             NodeList fieldElements = doc.getElementsByTagName("field");
@@ -157,6 +173,7 @@ public class TableXML implements ITable {
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
             DOMSource source = new DOMSource(doc);
             String path = schemaPath();
             StreamResult result = new StreamResult(new File(path));
@@ -189,10 +206,24 @@ public class TableXML implements ITable {
         List<IRecord> records = new ArrayList<>();
 
         try {
-            File inputFile = new File(xmlPath());
+            InputStream inputStream;
+            Reader reader = null;
+            try {
+                inputStream = new FileInputStream(xmlPath());
+                try {
+                    reader = new InputStreamReader(inputStream, "ISO-8859-1");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            InputSource is = new InputSource(reader);
+            is.setEncoding("ISO-8859-1");
+
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(inputFile);
+            Document doc = dBuilder.parse(is);
             doc.getDocumentElement().normalize();
             NodeList recordList = doc.getElementsByTagName("record");
 
@@ -273,6 +304,7 @@ public class TableXML implements ITable {
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
             DOMSource source = new DOMSource(doc);
             String path = xmlPath();
             StreamResult result = new StreamResult(new File(path));
