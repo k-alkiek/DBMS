@@ -9,30 +9,30 @@ public class Select implements IDataOperation {
     private ICondition myCondition;
     private String tableName;
     private String databaseName;
-    private List<String> fieldsName;
+    private List<String> selectedFields;
     public Select(ICondition condition, String tableName, String databaseName, List<String> FieldsName) {
         this.myCondition = condition;
         this.databaseName = databaseName;
         this.tableName = tableName;
-        this.fieldsName =  FieldsName;
+        this.selectedFields =  FieldsName;
 
     }
-    public boolean find(String sbstr) {
+    public boolean find(String sbstr, List<IField> tablesField) {
 
-        for(int i = 0; i < fieldsName.size(); i++) {
-            if(fieldsName.get(i).equals(sbstr)) {
+        for(int i = 0; i < tablesField.size(); i++) {
+            if(tablesField.get(i).getName().equals(sbstr)) {
                 return  true;
             }
         }
         return false;
     }
     public boolean notVaild(List<IField> listOfFields) {
-        for(int i = 0; i < fieldsName.size(); i++)
+        for(int i = 0; i < selectedFields.size(); i++)
         {
             int flag = 0;
             for(int j = 0; j < listOfFields.size(); j++)
             {
-                if(listOfFields.get(j).getName().equals(fieldsName.get(i)))
+                if(listOfFields.get(j).getName().equals(selectedFields.get(i)))
                 {
                     flag = 1;
                 }
@@ -50,23 +50,25 @@ public class Select implements IDataOperation {
         IDatabase database = manager.getDatabaseInUse();
         TableCachedXml table = new TableCachedXml(database.getName(), tableName);
         List<IRecord> records = table.select(myCondition);
-        List<IField> fields = table.getFields();
-        if(fieldsName.size() == 0) {
-            this.fieldsName.clear();
-            for( int j = 0; j < fields.size(); j++)
-                this.fieldsName.add(fields.get(j).getName());
+        List<IField> tableFields = table.getFields();
+        if(selectedFields.size() == 0) {
+            this.selectedFields.clear();
+            for( int j = 0; j < tableFields.size(); j++)
+                this.selectedFields.add(tableFields.get(j).getName());
         }
-        Object[][] result = new Object[records.size()][fieldsName.size()];
-        if(notVaild(fields)){
+        Object[][] result = new Object[records.size()][selectedFields.size()];
+        if(notVaild(tableFields)){
             throw  null;
         }
+        int u = 0;
         for(int i = 0; i < records.size(); i++) {
             IRecord record = records.get(i);
-            for( int j = 0; j < fields.size(); j++) {
-                String fieldName = fields.get(j).getName();
-                if(find(fieldName)) {
+            u = 0;
+            for( int j = 0; j < selectedFields.size(); j++) {
+                String fieldName = selectedFields.get(j);
+              //  if(find(fieldName, tableFields)) {
                     result[i][j] = record.getAttribute(fieldName);
-                }
+                //}
             }
         }
 
