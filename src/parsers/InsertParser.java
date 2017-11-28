@@ -21,7 +21,6 @@ public class InsertParser implements IIntegerParser {
             columns = getColumns(query);
             values = getValues(query);
             IIntegerOperation insert = new Insert(tableName, getFieldNames(), getRealValues());
-            System.out.println(tableName);
             return insert.execute();
         } else {
             throw new SQLException("invalid Query");
@@ -68,6 +67,12 @@ public class InsertParser implements IIntegerParser {
                 query)) {
             columns = "*";
             return true;
+        } else if (Pattern.matches("(?i)\\s*(INSERT)\\s+" +
+                        "(INTO)\\s+\\w+\\s*(\\()\\s*(\\w+\\s*(,)\\s*)*\\w+\\s*(\\))\\s+" +
+                        "(VALUES)\\s*(\\()\\s*(.+\\s*(,)\\s*)*.+\\s*(\\))\\s*(;)?\\s*",
+                query)) {
+            return true;
+
         }
         return false;
     }
@@ -78,7 +83,6 @@ public class InsertParser implements IIntegerParser {
         for (int i = 0; i < fields.length; i++) {
             value.add(fields[i].trim());
         }
-        System.out.println(columns);
         return value;
     }
 
