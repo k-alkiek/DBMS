@@ -11,5 +11,6 @@ public interface IDatabase {
     void createTable(String tableName,List<IField> fields);
     void deleteTable(String tableName) throws TableNotFoundException;
     String getName();
+    boolean hasTable(String tableName);
 
 }

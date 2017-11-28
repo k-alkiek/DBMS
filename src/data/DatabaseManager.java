@@ -51,7 +51,7 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
     public String databasePath(String databaseName) {
-        return databasesPath + databaseName;
+        return System.getProperty("user.dir") + databasesPath + databaseName;
     }
 
     private void deleteFilesInDirectory(File directory) {
