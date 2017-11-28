@@ -27,7 +27,7 @@ public class Insert implements IIntegerOperation {
     public int execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
-        TableXML table = new TableXML(database.getName(), tableName);
+        TableCachedXml table = new TableCachedXml(database.getName(), tableName);
         List<Object> objectValue = new ArrayList<Object>(values);
         List<IField> listOfFields =  table.getFields();
         if(fieldNams.get(0).equals("*")) {
