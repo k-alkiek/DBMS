@@ -42,7 +42,7 @@ public class Update implements IIntegerOperation {
     public int execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
-        TableXML table = new TableXML(database.getName(), tableName);
+        TableCachedXml table = new TableCachedXml(database.getName(), tableName);
         if(notVaild(table.getFields())) {
             throw  null;
         }

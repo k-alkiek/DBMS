@@ -24,6 +24,12 @@ public class CreateTable implements IBooleanOperation {
     @Override
     public boolean execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
+        boolean foundDatabase = false;
+        for(int i=0;i<manager.allDatabase.size();i++)
+            if(manager.allDatabase.get(i).equals(databaseName))
+                foundDatabase = true;
+        if (!foundDatabase)
+            return  false;
         IDatabase database = manager.getDatabaseInUse();
         database.createTable(tableName, Arrays.asList(myFields));
         return true;

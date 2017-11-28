@@ -16,17 +16,17 @@ public class DatabaseImp implements Database {
     public String createDatabase(String databaseName, boolean dropIfExists) {
         if(dropIfExists){
             try {
-                executeStructureQuery("DROP "+databaseName);
+                executeStructureQuery("DROP DATABASE "+databaseName);
             } catch (SQLException e) { }
             finally {
                 try {
-                    executeStructureQuery("CREATE "+databaseName);
+                    executeStructureQuery("CREATE DATABASE "+databaseName);
                 } catch (SQLException e) {}
             }
         }
         else {
             try {
-                executeStructureQuery("CREATE "+databaseName);
+                executeStructureQuery("CREATE DATABASE "+databaseName);
             } catch (SQLException e) {}
         }
         return databaseManager.databasePath(databaseName);
@@ -39,12 +39,12 @@ public class DatabaseImp implements Database {
         if(modifiedQuery.startsWith("create table")) {
             booleanParser = new CreateTableParser();
         }
-        else if(modifiedQuery.startsWith("create")) {
+        else if(modifiedQuery.startsWith("create database")) {
             booleanParser = new CreateDatabaseParser();
         }
         else if(modifiedQuery.startsWith("drop table")) {
             booleanParser = new DropTableParser();
-        }else if(modifiedQuery.startsWith("create")) {
+        }else if(modifiedQuery.startsWith("drop database")) {
             booleanParser = new DropDatabaseParser();
         }
         else {

@@ -27,10 +27,16 @@ public class Insert implements IIntegerOperation {
     public int execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
-        TableXML table = new TableXML(database.getName(), tableName);
+        TableCachedXml table = new TableCachedXml(database.getName(), tableName);
         List<Object> objectValue = new ArrayList<Object>(values);
-        record = new Record(table, fieldNams, objectValue);
         List<IField> listOfFields =  table.getFields();
+        if(fieldNams.get(0).equals("*")) {
+            this.fieldNams.clear();
+            for( int j = 0; j < listOfFields.size(); j++)
+                this.fieldNams.add(listOfFields.get(j).getName());
+        }
+        record = new Record(table, fieldNams, objectValue);
+
         for(int i=0;i<fieldNams.size();i++)
         {
             int flag = 0;

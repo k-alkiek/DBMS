@@ -48,7 +48,7 @@ public class Select implements IDataOperation {
     public Object[][] execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
-        TableXML table = new TableXML(database.getName(), tableName);
+        TableCachedXml table = new TableCachedXml(database.getName(), tableName);
         List<IRecord> records = table.select(myCondition);
         List<IField> fields = table.getFields();
         if(fieldsName.size() == 0) {

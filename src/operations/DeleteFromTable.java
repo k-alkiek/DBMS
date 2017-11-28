@@ -16,7 +16,7 @@ public class DeleteFromTable implements IIntegerOperation {
     public int execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
-        TableXML table = new TableXML(database.getName(), tableName);
+        TableCachedXml table = new TableCachedXml(database.getName(), tableName);
         return table.delete(myCondition);
     }
 }

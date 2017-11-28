@@ -207,7 +207,14 @@ public class TableXML implements ITable {
                         if (fieldElement.getNodeType() == fieldElement.ELEMENT_NODE) {
                             Element field = (Element) fieldElement;
                             fieldNames.add(field.getAttribute("name"));
-                            values.add(field.getTextContent());
+
+//                            String value = values.add(field.getTextContent());
+                            Object value = field.getTextContent();
+                            if (field.getAttribute("class").equals("IntField")) {
+                                values.add(Integer.parseInt(value.toString()));
+                            } else {
+                                values.add(value);
+                            }
                         }
                     }
 
