@@ -24,6 +24,12 @@ public class TableCachedXml implements ITable {
     public TableCachedXml(String databaseName, String name) {
         this.databaseName = databaseName;
         this.name = name;
+
+        File xmlFile = new File(xmlPath());
+        if(!xmlFile.exists()) {    //create table xml file with empty records
+            setRecords(new ArrayList<IRecord>());
+        }
+
         this.classRecords = getRecords();
     }
 
