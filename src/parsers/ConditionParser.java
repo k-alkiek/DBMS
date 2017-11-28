@@ -29,7 +29,7 @@ public class ConditionParser implements IConditionParser {
 
     private void setAttributes(String condition) {
         String[] attributes = condition.split("(<|>|=|>=|<=)");
-        fieldName = attributes[0];
-        value = attributes[1].replaceAll("'", "");
+        fieldName = attributes[0].trim();
+        value = attributes[1].replaceAll("'", "").trim();
     }
 }

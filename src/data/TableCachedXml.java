@@ -175,6 +175,11 @@ public class TableCachedXml implements ITable {
         return false;
     }
 
+    @Override
+    public void createXMLFile() {
+        setRecords(new ArrayList<IRecord>());
+    }
+
     private void initializeTableFiles() {
         setRecords(new ArrayList<IRecord>());
         setFields(new ArrayList<IField>());
