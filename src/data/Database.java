@@ -19,14 +19,14 @@ public class Database implements IDatabase {
         ITable table = new TableCachedXml(this.name, tableName);
         String tablePath = (DatabaseManager.getInstance().databasePath(name)) + tableName + ".xml";
         table.setFields(fields);
-//        File xmlFile = new File(name + "/" + name + ".xml");
+//        File xmlFile = new File(name + System.getProperty("file.separator") + name + ".xml");
     }
 
     @Override
     public void deleteTable(String tableName) throws TableNotFoundException {
         String databasePath = DatabaseManager.getInstance().databasePath(getName());
-        File XMLFile = new File(databasePath + "/" + tableName + ".xml");
-        File XSCFile = new File(databasePath + "/" + tableName + ".xsc");
+        File XMLFile = new File(databasePath + System.getProperty("file.separator") + tableName + ".xml");
+        File XSCFile = new File(databasePath + System.getProperty("file.separator") + tableName + ".xsc");
         if(!XMLFile.exists()) {
             throw new TableNotFoundException();
         }
