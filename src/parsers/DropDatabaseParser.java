@@ -23,7 +23,7 @@ public class DropDatabaseParser implements IBooleanParser {
 
     public String getDataBaseName(String query) {
         query = query.trim();
-        String dataBaseName = query.split("\\s+")[2];
+        String dataBaseName = query.split("\\s+")[2].toLowerCase();
         if(dataBaseName.contains(";")) {
             dataBaseName = dataBaseName.substring(0, dataBaseName.lastIndexOf(";"));
         }

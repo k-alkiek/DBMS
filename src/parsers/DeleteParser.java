@@ -25,6 +25,7 @@ public class DeleteParser implements IIntegerParser {
     }
 
     public String getTableName(String query) {
+        tableName = tableName.toLowerCase();
         return tableName;
     }
 

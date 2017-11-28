@@ -23,7 +23,7 @@ public class DropTableParser implements IBooleanParser {
 
     public String getTableName(String query) {
         query = query.trim();
-        String tableName = query.split("\\s+")[2];
+        String tableName = query.split("\\s+")[2].toLowerCase();
         if(tableName.contains(";")) {
             tableName = tableName.substring(0, tableName.lastIndexOf(";"));
         }

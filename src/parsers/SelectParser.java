@@ -30,6 +30,7 @@ public class SelectParser implements ICollectionParser {
     }
 
     public String getTableName(String query) {
+        tableName = tableName.toLowerCase();
         return tableName;
     }
 
@@ -70,10 +71,7 @@ public class SelectParser implements ICollectionParser {
             return names;
         String[] fields = columns.split(",");
         for (String str : fields) {
-            names.add(str.trim());
-
-     //       System.out.println(str.trim());
-
+            names.add(str.trim().toLowerCase());
         }
         return names;
     }
