@@ -1,5 +1,6 @@
 package parsers;
 
+import data.DatabaseManager;
 import operations.CreateTable;
 import operations.IBooleanOperation;
 
@@ -17,7 +18,8 @@ public class CreateTableParser implements IBooleanParser {
         if (isValidQuery(query)) {
             fields = getFields(query);
             getAtrributes();
-            IBooleanOperation create = new CreateTable(getTableName(query), "",
+            String databaseName = DatabaseManager.getInstance().getDatabaseInUse().getName();
+            IBooleanOperation create = new CreateTable(getTableName(query), databaseName,
                     fieldNames, dataTypes);
             return create.execute();
         } else {

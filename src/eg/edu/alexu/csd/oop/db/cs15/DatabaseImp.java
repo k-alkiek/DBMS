@@ -39,12 +39,12 @@ public class DatabaseImp implements Database {
         if(modifiedQuery.startsWith("create table")) {
             booleanParser = new CreateTableParser();
         }
-        else if(modifiedQuery.startsWith("create")) {
+        else if(modifiedQuery.startsWith("create database")) {
             booleanParser = new CreateDatabaseParser();
         }
         else if(modifiedQuery.startsWith("drop table")) {
             booleanParser = new DropTableParser();
-        }else if(modifiedQuery.startsWith("create")) {
+        }else if(modifiedQuery.startsWith("drop database")) {
             booleanParser = new DropDatabaseParser();
         }
         else {
