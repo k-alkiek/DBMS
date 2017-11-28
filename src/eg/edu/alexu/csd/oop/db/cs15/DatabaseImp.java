@@ -35,7 +35,6 @@ public class DatabaseImp implements Database {
 
     @Override
     public boolean executeStructureQuery(String query) throws SQLException {
-        query = query.toLowerCase();
         String modifiedQuery = query.trim().toLowerCase();
         IBooleanParser booleanParser = null;
         if(modifiedQuery.startsWith("create table")) {
@@ -62,8 +61,6 @@ public class DatabaseImp implements Database {
 
     @Override
     public Object[][] executeQuery(String query) throws SQLException {
-        query = query.toLowerCase();
-
         ICollectionParser collectionParser = null;
         String modifiedQuery = query.trim().toLowerCase();
         if(modifiedQuery.startsWith("select"))
@@ -75,8 +72,6 @@ public class DatabaseImp implements Database {
 
     @Override
     public int executeUpdateQuery(String query) throws SQLException {
-        query = query.toLowerCase();
-
         IIntegerParser integerParser = null;
         String modifiedQuery = query.trim().toLowerCase();
         if(modifiedQuery.startsWith("insert")) {

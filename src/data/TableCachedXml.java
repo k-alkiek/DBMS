@@ -69,8 +69,7 @@ public class TableCachedXml implements ITable {
     public int delete(ICondition condition) {
         List<IRecord> records = getRecords();
         int count = 0;
-
-        for (int i = 0; i < records.size(); i++) {
+        for (int i = records.size() - 1; i >= 0; i--) {
             if (condition.validate(records.get(i))) {
                 records.remove(i);
                 count++;
