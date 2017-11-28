@@ -29,7 +29,7 @@ public class InsertParser implements IIntegerParser {
 
     public String getTableName(String query) {
         query = query.trim();
-        String tableName = query.split("\\s+")[2];
+        String tableName = query.split("\\s+")[2].toLowerCase();
         return tableName;
     }
 
@@ -81,7 +81,7 @@ public class InsertParser implements IIntegerParser {
         List<String> value = new ArrayList<>();
         String[] fields = columns.trim().split(",");
         for (int i = 0; i < fields.length; i++) {
-            value.add(fields[i].trim());
+            value.add(fields[i].trim().toLowerCase());
         }
         return value;
     }
@@ -90,7 +90,7 @@ public class InsertParser implements IIntegerParser {
         List<String> value = new ArrayList<>();
         String[] inputs = values.trim().split(",");
         for (int i = 0; i < inputs.length; i++) {
-            value.add(inputs[i].trim().replaceAll("'", ""));
+            value.add(inputs[i].trim().replaceAll("'", "").toLowerCase());
         }
         return value;
     }

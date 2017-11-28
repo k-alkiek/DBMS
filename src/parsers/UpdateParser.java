@@ -32,7 +32,7 @@ public class UpdateParser implements IIntegerParser {
     }
 
     public String getTableName(String query) {
-        String tableName = query.trim().split("\\s+")[1];
+        String tableName = query.trim().split("\\s+")[1].toLowerCase();
         return tableName;
     }
 
@@ -78,7 +78,7 @@ public class UpdateParser implements IIntegerParser {
         String[] attr = inputs.split(",");
         for (int i = 0; i < attr.length; i ++) {
             String[] attributes = attr[i].split("=");
-            fieldNames.add(attributes[0].trim());
+            fieldNames.add(attributes[0].trim().toLowerCase());
             valuesArgs.add(attributes[1].trim());
         }
     }

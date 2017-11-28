@@ -30,7 +30,7 @@ public class CreateTableParser implements IBooleanParser {
     public String getTableName(String query) {
         query = query.trim();
         String tableName = query.substring(query.toLowerCase().lastIndexOf("table") + 6,
-                query.lastIndexOf("(")).trim();
+                query.lastIndexOf("(")).trim().toLowerCase();
         return tableName;
     }
 

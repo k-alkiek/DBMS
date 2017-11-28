@@ -27,7 +27,7 @@ public class CreateDatabaseParser implements IBooleanParser {
         if(dataBaseName.contains(";")) {
             dataBaseName = dataBaseName.substring(0, dataBaseName.lastIndexOf(";"));
         }
-        return dataBaseName;
+        return dataBaseName.toLowerCase();
     }
 
     private boolean isValidateQuery(String query) {
