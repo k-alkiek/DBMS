@@ -29,8 +29,10 @@ public class CreateTableParser implements IBooleanParser {
 
     public String getTableName(String query) {
         query = query.trim();
-        String tableName = query.substring(query.toLowerCase().lastIndexOf("table") + 6,
-                query.lastIndexOf("(")).trim().toLowerCase();
+        String tableName = query.split("\\s+")[2].toLowerCase();
+        if (tableName.contains("(")) {
+            tableName = tableName.substring(0, tableName.lastIndexOf("("));
+        }
         return tableName;
     }
 
