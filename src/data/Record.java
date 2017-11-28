@@ -33,7 +33,7 @@ public class Record implements IRecord {
 
     @Override
     public Object getAttribute(String fieldName) {
-        return fields.get(fieldName).toString();
+        return fields.get(fieldName);
     }
 
     @Override

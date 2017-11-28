@@ -39,4 +39,15 @@ public class Database implements IDatabase {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean hasTable(String tableName) {
+        String tablePath = (DatabaseManager.getInstance().databasePath(name)) + tableName + ".xml";
+        File tableFile = new File(tablePath);
+        if (tableFile.exists()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

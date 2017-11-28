@@ -9,16 +9,24 @@ public class MainTester {
         DatabaseImp dp = new DatabaseImp();
         dp.createDatabase("DB1",false);
         System.out.println(dp.executeStructureQuery("CREate Table t2 (id int,name varchar)"));
-        /*System.out.println(dp.executeUpdateQuery("insert into t2 values (1,'Ayman')"));
+        System.out.println(dp.executeUpdateQuery("insert into t2 values (1,'Ayman')"));
         System.out.println(dp.executeUpdateQuery("insert into t2 (name) values ('Kaled')"));
-        System.out.println(dp.executeUpdateQuery("insert into t2 (id) values (-1)"));*/
+        System.out.println(dp.executeUpdateQuery("insert into t2 (id) values (-1)"));
+        System.out.println();
         select(dp,"SElect * From t2");
+        System.out.println();
         select(dp,"SElect name From t2");
+        System.out.println();
         select(dp,"SElect id From t2");
+        System.out.println();
         select(dp,"SElect * From t2 where id = 0");
+        System.out.println();
         select(dp,"SElect * From t2 where id > 0");
+        System.out.println();
         select(dp,"SElect * From t2 where id <= 0");    // Error Here
+        System.out.println();
         System.out.println(dp.executeUpdateQuery("DElete * From t2"));
+        System.out.println();
         select(dp,"SElect * From t2");
     }
 
@@ -26,7 +34,7 @@ public class MainTester {
         Object[][] values = db.executeQuery(query);
         for (int i = 0; i < values.length; i ++) {
             for (int j = 0; j < values[i].length; j ++) {
-                System.out.print(values[i][j] + " ");
+                System.out.print(values[i][j].getClass() + " ");
             }
             System.out.println();
         }

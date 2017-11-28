@@ -5,6 +5,7 @@ import data.IDatabaseManager;
 import eg.edu.alexu.csd.oop.db.Database;
 import parsers.*;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 public class DatabaseImp implements Database {
@@ -55,7 +56,7 @@ public class DatabaseImp implements Database {
             return booleanParser.parse(query);
         }
         catch (Exception e) {
-            return false;
+            throw new SQLException();
         }
     }
 
@@ -67,7 +68,12 @@ public class DatabaseImp implements Database {
             collectionParser = new SelectParser();
         else
             throw new SQLException();
-        return collectionParser.parse(query);
+
+        try {
+            return collectionParser.parse(query);
+        } catch (Exception e) {
+            throw new SQLException();
+        }
     }
 
     @Override

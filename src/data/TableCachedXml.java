@@ -120,10 +120,8 @@ public class TableCachedXml implements ITable {
                 try {
                     reader = new InputStreamReader(inputStream, "ISO-8859-1");
                 } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
                 }
             } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
             }
             InputSource is = new InputSource(reader);
             is.setEncoding("ISO-8859-1");
@@ -146,7 +144,7 @@ public class TableCachedXml implements ITable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
 
         return fields;
