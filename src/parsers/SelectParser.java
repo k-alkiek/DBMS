@@ -71,6 +71,9 @@ public class SelectParser implements ICollectionParser {
         String[] fields = columns.split(",");
         for (String str : fields) {
             names.add(str.trim());
+
+     //       System.out.println(str.trim());
+
         }
         return names;
     }

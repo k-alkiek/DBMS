@@ -19,8 +19,6 @@ public class Insert implements IIntegerOperation {
         this.tableName = tableName;
         this.fieldNams = fieldNams;
         this.values = values;
-
-
     }
 
     @Override
