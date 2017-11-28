@@ -77,10 +77,9 @@ public class UpdateParser implements IIntegerParser {
         valuesArgs = new ArrayList<>();
         String[] attr = inputs.split(",");
         for (int i = 0; i < attr.length; i ++) {
-            String[] attributes = condition.split("=");
+            String[] attributes = attr[i].split("=");
             fieldNames.add(attributes[0].trim());
             valuesArgs.add(attributes[1].trim());
-            System.out.println(fieldNames.get(i) + " " + valuesArgs.get(i));
         }
     }
 }
