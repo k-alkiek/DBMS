@@ -66,4 +66,7 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
+# Database folder
+/databases/
+
 # End of https://www.gitignore.io/api/intellij
