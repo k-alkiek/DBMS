@@ -1,6 +1,7 @@
 package data;
 
 import org.w3c.dom.*;
+import query.ICondition;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -9,9 +10,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import query.ICondition;
 
 /**
  * Created by khaled on 11/25/17.
@@ -19,13 +20,11 @@ import query.ICondition;
 public class TableCachedXml implements ITable {
     String name;
     String databaseName;
-    List<IRecord> records = null;
-
+    List<IRecord> classRecords = null;
     public TableCachedXml(String databaseName, String name) {
         this.databaseName = databaseName;
         this.name = name;
-        this.records = getRecords();
-//        initializeTableFiles();
+        this.classRecords = getRecords();
     }
 
     @Override
@@ -49,17 +48,48 @@ public class TableCachedXml implements ITable {
 
     @Override
     public List<IRecord> select(ICondition condition) {
-        return null;
+        List<IRecord> records = this.getRecords();
+        List<IRecord> result = new ArrayList<>();
+        for(int i = 0; i < records.size(); i++) {
+            if (condition.validate(records.get(i))) {
+                result.add(records.get(i));
+            }
+        }
+
+        return result;
     }
 
     @Override
     public int delete(ICondition condition) {
-        return 0;
+        List<IRecord> records = getRecords();
+        int count = 0;
+
+        for (int i = 0; i < records.size(); i++) {
+            if (condition.validate(records.get(i))) {
+                records.remove(i);
+                count++;
+            }
+
+        }
+        setRecords(records);
+        return count;
     }
 
     @Override
-    public int update(ICondition condition, List<String> fieldNams, List<String> values) {
-        return 0;
+    public int update(ICondition condition, List<String> fieldNames, List<String> values) {
+        List<IRecord> records = getRecords();
+        int count = 0;
+
+        for (IRecord record : records) {
+            if (condition.validate(record)) {
+                count++;
+                for (int i = 0; i < fieldNames.size(); i++) {
+                    record.setAttribute(fieldNames.get(i), values.get(i));
+                }
+            }
+        }
+        setRecords(records);
+        return count;
     }
 
     @Override
@@ -97,6 +127,7 @@ public class TableCachedXml implements ITable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return fields;
     }
 
@@ -150,9 +181,8 @@ public class TableCachedXml implements ITable {
     }
 
     private List<IRecord> getRecords() {
-        if(records == null) {
+        if(this.classRecords == null) {
             List<IRecord> records = new ArrayList<>();
-
             try {
                 File inputFile = new File(xmlPath());
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -195,17 +225,15 @@ public class TableCachedXml implements ITable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             return records;
         }
         else {
-            return records;
+            return classRecords;
         }
     }
 
-    private void setRecords(List<IRecord> newRecords) {
+    private void setRecords(List<IRecord> records) {
         try {
-            records = newRecords;
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.newDocument();
