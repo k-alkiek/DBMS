@@ -17,7 +17,9 @@ public class Database implements IDatabase {
     @Override
     public void createTable(String tableName, List<IField> fields) {
         ITable table = new TableCachedXml(this.name, tableName);
+        String tablePath = (DatabaseManager.getInstance().databasePath(name)) + tableName + ".xml";
         table.setFields(fields);
+//        File xmlFile = new File(name + "/" + name + ".xml");
     }
 
     @Override

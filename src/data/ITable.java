@@ -16,6 +16,7 @@ public interface ITable {
     List<IField> getFields();
     void setFields(List<IField> fields);
     boolean fieldExists(IField field);
+    void createXMLFile();
 
 
 }

@@ -29,7 +29,8 @@ public class CreateTableParser implements IBooleanParser {
 
     public String getTableName(String query) {
         query = query.trim();
-        String tableName = query.split("\\s+")[2];
+        String tableName = query.substring(query.toLowerCase().lastIndexOf("table"),
+                query.lastIndexOf("("));
         return tableName;
     }
 
@@ -54,7 +55,6 @@ public class CreateTableParser implements IBooleanParser {
             String[] attr = columns[i].trim().split("\\s+");
             fieldNames[i] = attr[0].trim();
             dataTypes[i] = attr[1].trim();
-//            System.out.println(fieldNames[i] + " " + dataTypes[i]);
         }
     }
 }
