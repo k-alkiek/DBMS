@@ -2,6 +2,7 @@ package operations;
 
 import data.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +33,14 @@ public class CreateTable implements IBooleanOperation {
                 foundDatabase = true;
         if (!foundDatabase)
             return  false;
+
+
         IDatabase database = manager.getDatabaseInUse();
+        String tablePath = manager.databasePath(database.getName()) + System.getProperty("file.separator") + tableName + ".xml";
+        File tableFile = new File(tablePath);
+        if (tableFile.exists()) {
+            return false;
+        }
         database.createTable(tableName, myFields);
         return true;
     }
