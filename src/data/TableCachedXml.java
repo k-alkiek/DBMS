@@ -19,12 +19,12 @@ import query.ICondition;
 public class TableCachedXml implements ITable {
     String name;
     String databaseName;
-    List<IRecord> records;
+    List<IRecord> records = null;
 
     public TableCachedXml(String databaseName, String name) {
         this.databaseName = databaseName;
         this.name = name;
-        this.records = new ArrayList<>();
+        this.records = getRecords();
 //        initializeTableFiles();
     }
 
@@ -150,7 +150,57 @@ public class TableCachedXml implements ITable {
     }
 
     private List<IRecord> getRecords() {
-        return records;
+        if(records == null) {
+            List<IRecord> records = new ArrayList<>();
+
+            try {
+                File inputFile = new File(xmlPath());
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(inputFile);
+                doc.getDocumentElement().normalize();
+                NodeList recordList = doc.getElementsByTagName("record");
+
+                for (int i = 0; i < recordList.getLength(); i++) {
+                    Node recordElement = recordList.item(i);
+
+                    if (recordElement.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement = (Element) recordElement;
+
+                        NodeList fieldList = eElement.getElementsByTagName("field");
+                        List<String> fieldNames = new ArrayList<>();
+                        List<Object> values = new ArrayList<>();
+
+                        for (int count = 0; count < fieldList.getLength(); count++) {
+                            Node fieldElement = fieldList.item(count);
+
+                            if (fieldElement.getNodeType() == fieldElement.ELEMENT_NODE) {
+                                Element field = (Element) fieldElement;
+                                fieldNames.add(field.getAttribute("name"));
+
+//                            String value = values.add(field.getTextContent());
+                                Object value = field.getTextContent();
+                                if (field.getAttribute("class").equals("IntField")) {
+                                    values.add(Integer.parseInt(value.toString()));
+                                } else {
+                                    values.add(value);
+                                }
+                            }
+                        }
+
+                        IRecord record = new Record(this, fieldNames, values);
+                        records.add(record);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return records;
+        }
+        else {
+            return records;
+        }
     }
 
     private void setRecords(List<IRecord> newRecords) {
