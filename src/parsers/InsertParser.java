@@ -87,7 +87,7 @@ public class InsertParser implements IIntegerParser {
         List<String> value = new ArrayList<>();
         String[] inputs = values.trim().split(",");
         for (int i = 0; i < inputs.length; i++) {
-            value.add(inputs[i].trim().replaceAll("'", "").toLowerCase());
+            value.add(inputs[i].trim());
         }
         return value;
     }

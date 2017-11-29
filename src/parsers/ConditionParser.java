@@ -35,7 +35,7 @@ public class ConditionParser implements IConditionParser {
         if (!value.toString().contains("'")) {
             value = Integer.parseInt(value.toString());
         } else {
-            value = value.toString().replaceAll("'", "").toString();
+            value = value.toString().toString();
         }
     }
 }
