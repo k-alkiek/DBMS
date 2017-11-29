@@ -316,10 +316,10 @@ public class TableXML implements ITable {
     }
 
     private String schemaPath() {
-        return DatabaseManager.getInstance().databasePath(databaseName) + "/" + name + ".xsc";
+        return DatabaseManager.getInstance().databasePath(databaseName) + System.getProperty("file.separator") + name + ".xsc";
     }
 
     private String xmlPath() {
-        return DatabaseManager.getInstance().databasePath(databaseName) + "/" + name + ".xml";
+        return DatabaseManager.getInstance().databasePath(databaseName) + System.getProperty("file.separator") + name + ".xml";
     }
 }

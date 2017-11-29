@@ -77,7 +77,7 @@ public class ParserTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        assertEquals("Customers", delete.getTableName(query));
+        assertEquals("Customers", delete.getTableName());
         assertEquals("CustomerName='Alfreds Futterkiste'", delete.getCondition(query));
         query = "  DELETE *  FROM   table_name;";
         try {
@@ -85,7 +85,7 @@ public class ParserTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        assertEquals("table_name", delete.getTableName(query));
+        assertEquals("table_name", delete.getTableName());
         assertEquals("*", delete.getCondition(query));
     }
 

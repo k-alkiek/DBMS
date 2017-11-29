@@ -42,9 +42,14 @@ public class Update implements IIntegerOperation {
     public int execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
-        TableCachedXml table = new TableCachedXml(database.getName(), tableName);
+        TableCachedXml table;
+        try {
+            table = new TableCachedXml(database.getName(), tableName);
+        } catch (Exception e) {
+            return 0;
+        }
         if(notVaild(table.getFields())) {
-            throw  null;
+            return 0;
         }
        return table.update(myCondition, fieldNams, values);
     }

@@ -5,6 +5,7 @@ import data.IDatabaseManager;
 import eg.edu.alexu.csd.oop.db.Database;
 import parsers.*;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 public class DatabaseImp implements Database {
@@ -17,17 +18,19 @@ public class DatabaseImp implements Database {
       databaseName = databaseName.toLowerCase();
         if(dropIfExists){
             try {
-                executeStructureQuery("DROP DATABASE "+databaseName);
-            } catch (SQLException e) { }
+                executeStructureQuery("DROP DATABASE " + databaseName);
+            } catch (SQLException e) {
+            }
             finally {
                 try {
-                    executeStructureQuery("CREATE DATABASE "+databaseName);
-                } catch (SQLException e) {}
+                    executeStructureQuery("CREATE DATABASE " + databaseName);
+                } catch (SQLException e) {
+                }
             }
         }
         else {
             try {
-                executeStructureQuery("CREATE DATABASE "+databaseName);
+                executeStructureQuery("CREATE DATABASE " + databaseName);
             } catch (SQLException e) {}
         }
         return databaseManager.databasePath(databaseName);
@@ -38,6 +41,9 @@ public class DatabaseImp implements Database {
         String modifiedQuery = query.trim().toLowerCase();
         IBooleanParser booleanParser = null;
         if(modifiedQuery.startsWith("create table")) {
+            if (databaseManager.getDatabaseInUse() == null) {
+                throw new SQLException();
+            }
             booleanParser = new CreateTableParser();
         }
         else if(modifiedQuery.startsWith("create database")) {
@@ -55,7 +61,7 @@ public class DatabaseImp implements Database {
             return booleanParser.parse(query);
         }
         catch (Exception e) {
-            return false;
+            throw new SQLException();
         }
     }
 
@@ -67,7 +73,12 @@ public class DatabaseImp implements Database {
             collectionParser = new SelectParser();
         else
             throw new SQLException();
-        return collectionParser.parse(query);
+
+        try {
+            return collectionParser.parse(query);
+        } catch (Exception e) {
+            throw new SQLException();
+        }
     }
 
     @Override

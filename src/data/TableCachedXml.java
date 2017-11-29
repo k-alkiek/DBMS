@@ -120,10 +120,8 @@ public class TableCachedXml implements ITable {
                 try {
                     reader = new InputStreamReader(inputStream, "ISO-8859-1");
                 } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
                 }
             } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
             }
             InputSource is = new InputSource(reader);
             is.setEncoding("ISO-8859-1");
@@ -146,7 +144,7 @@ public class TableCachedXml implements ITable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
 
         return fields;
@@ -325,10 +323,10 @@ public class TableCachedXml implements ITable {
     }
 
     private String schemaPath() {
-        return DatabaseManager.getInstance().databasePath(databaseName) + "/" + name + ".xsc";
+        return DatabaseManager.getInstance().databasePath(databaseName) + System.getProperty("file.separator") + name + ".xsc";
     }
 
     private String xmlPath() {
-        return DatabaseManager.getInstance().databasePath(databaseName) + "/" + name + ".xml";
+        return DatabaseManager.getInstance().databasePath(databaseName) + System.getProperty("file.separator") + name + ".xml";
     }
 }

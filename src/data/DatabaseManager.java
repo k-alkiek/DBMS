@@ -12,10 +12,10 @@ public class DatabaseManager implements IDatabaseManager {
     private IDatabase databaseInUse;
     private static DatabaseManager databaseManager;
     public ArrayList<String> allDatabase = new ArrayList<>();
-    private static final String databasesPath = "Database/";
+    private static final String databasesPath = "Database" + System.getProperty("file.separator");
 
     private DatabaseManager() {
-
+        databaseInUse = null;
     }
 
     public static DatabaseManager getInstance() {
@@ -38,6 +38,7 @@ public class DatabaseManager implements IDatabaseManager {
         File databaseDir = new File(databasePath(databaseName));
         deleteFilesInDirectory(databaseDir);
         databaseDir.delete();
+        databaseInUse = null;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class DatabaseManager implements IDatabaseManager {
     }
 
     public String databasePath(String databaseName) {
-        return databasesPath + databaseName;
+        return System.getProperty("user.dir") + System.getProperty("file.separator") + databasesPath + databaseName;
     }
 
     private void deleteFilesInDirectory(File directory) {

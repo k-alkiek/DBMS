@@ -30,6 +30,9 @@ public class InsertParser implements IIntegerParser {
     public String getTableName(String query) {
         query = query.trim();
         String tableName = query.split("\\s+")[2].toLowerCase();
+        if (tableName.contains("(")) {
+            tableName = tableName.substring(0, tableName.lastIndexOf("("));
+        }
         return tableName;
     }
 
@@ -37,7 +40,7 @@ public class InsertParser implements IIntegerParser {
         secondIdx = query.toLowerCase().lastIndexOf("values");
         if (columns.equals("*"))
             return columns;
-        firstIdx = query.lastIndexOf(tableName) + tableName.length() + 2;
+        firstIdx = query.lastIndexOf(tableName) + tableName.length();
         columns = query.substring(firstIdx, secondIdx);
         columns = columns.replaceAll("(\\()", "");
         columns = columns.replaceAll("(\\))", "");
@@ -67,12 +70,6 @@ public class InsertParser implements IIntegerParser {
                 query)) {
             columns = "*";
             return true;
-        } else if (Pattern.matches("(?i)\\s*(INSERT)\\s+" +
-                        "(INTO)\\s+\\w+\\s*(\\()\\s*(\\w+\\s*(,)\\s*)*\\w+\\s*(\\))\\s+" +
-                        "(VALUES)\\s*(\\()\\s*(.+\\s*(,)\\s*)*.+\\s*(\\))\\s*(;)?\\s*",
-                query)) {
-            return true;
-
         }
         return false;
     }
