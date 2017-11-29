@@ -16,7 +16,7 @@ public class ConditionParser implements IConditionParser {
             if (condition.contains(">=")) {
                 return new BiggerThanOrEqualCondition(fieldName, value);
             } else if (condition.contains("<=")) {
-                return new SamllerThanCondition(fieldName, value);
+                return new SamllerThanOrEqualCondition(fieldName, value);
             } else if (condition.contains("=")) {
                 return new EqualCondition(fieldName, value);
             } else if (condition.contains(">")) {
