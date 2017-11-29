@@ -57,7 +57,7 @@ public class UpdateParser implements IIntegerParser {
             condition = query.substring(secondIdx, query.length());
             return true;
         } else if(Pattern.matches("(?i)\\s*(UPDATE)\\s+\\w+\\s+(SET)\\s+.+(;)?\\s*", query)) {
-            calculateArgs(query, query.length() - 1);
+            calculateArgs(query, query.length());
             condition = "*";
             return true;
         }
@@ -65,7 +65,7 @@ public class UpdateParser implements IIntegerParser {
     }
 
     private void calculateArgs(String query, int secondIdx) {
-        if (query.charAt(secondIdx) == ';') {
+        if (query.charAt(secondIdx - 1) == ';') {
             secondIdx--;
         }
         int firstIdx = query.toLowerCase().lastIndexOf("set") + 4;
