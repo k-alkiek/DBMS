@@ -2,6 +2,7 @@ package data;
 
 import data.Exceptions.InvalidDataTypeException;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +14,11 @@ public class Record implements IRecord {
     private Map<String, Object> fields;
     private ITable table;
 
-    public Record(ITable table, List<String> fieldNames, List<Object> values) {
+    public Record(ITable table, List<String> fieldNames, List<Object> values) throws SQLException {
         fields = new HashMap<>();
         this.table = table;
         if (fieldNames.size() != values.size()) {
-            throw new RuntimeException();
+            throw new SQLException();
         }
 
         for (int i = 0; i < fieldNames.size(); i++) {

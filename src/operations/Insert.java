@@ -2,6 +2,7 @@ package operations;
 
 import data.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,11 @@ public class Insert implements IIntegerOperation {
             for( int j = 0; j < listOfFields.size(); j++)
                 this.fieldNams.add(listOfFields.get(j).getName());
         }
-        record = new Record(table, fieldNams, objectValue);
+        try {
+            record = new Record(table, fieldNams, objectValue);
+        } catch (SQLException e) {
+
+        }
 
         for(int i=0;i<fieldNams.size();i++)
         {
