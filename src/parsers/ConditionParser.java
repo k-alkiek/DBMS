@@ -31,11 +31,6 @@ public class ConditionParser implements IConditionParser {
     private void setAttributes(String condition) {
         String[] attributes = condition.split("(<=|>=|=|>|<)");
         fieldName = attributes[0].trim().toLowerCase();
-        value = attributes[1].trim();
-        if (!value.toString().contains("'")) {
-            value = Integer.parseInt(value.toString());
-        } else {
-            value = value.toString().toString();
-        }
+        value = attributes[1].replaceAll("'", "").trim().toLowerCase();
     }
 }
