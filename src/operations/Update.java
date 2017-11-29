@@ -44,7 +44,7 @@ public class Update implements IIntegerOperation {
         IDatabase database = manager.getDatabaseInUse();
         TableCachedXml table = new TableCachedXml(database.getName(), tableName);
         if(notVaild(table.getFields())) {
-            throw  null;
+            return 0;
         }
        return table.update(myCondition, fieldNams, values);
     }
