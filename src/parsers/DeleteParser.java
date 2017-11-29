@@ -46,8 +46,11 @@ public class DeleteParser implements IIntegerParser {
             condition = query.substring(firstIdx);
             return true;
         } else if (Pattern.matches("(?i)\\s*(DELETE)\\s+(\\*)\\s+(FROM)\\s+\\w+\\s*(;)?\\s*", query)) {
+
+            return true;
+        } else if (Pattern.matches("(?i)\\s*(DELETE)\\s+(FROM)\\s+\\w+\\s*(;)?\\s*", query)) {
             query = query.trim();
-            tableName = query.split("\\s+")[3];
+            tableName = query.split("\\s+")[2];
             if(tableName.contains(";")) {
                 tableName = tableName.substring(0, tableName.lastIndexOf(";"));
             }
