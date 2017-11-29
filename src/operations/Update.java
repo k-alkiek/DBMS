@@ -3,7 +3,6 @@ package operations;
 import data.*;
 import query.ICondition;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Update implements IIntegerOperation {
@@ -49,8 +48,8 @@ public class Update implements IIntegerOperation {
             return 0;
         }
         if(notVaild(table.getFields())) {
-            return 0;
+            throw new RuntimeException();
         }
-       return table.update(myCondition, fieldNams, values);
+        return table.update(myCondition, fieldNams, values);
     }
 }
