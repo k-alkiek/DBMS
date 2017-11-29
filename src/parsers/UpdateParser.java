@@ -79,7 +79,7 @@ public class UpdateParser implements IIntegerParser {
         for (int i = 0; i < attr.length; i ++) {
             String[] attributes = attr[i].split("=");
             fieldNames.add(attributes[0].trim().toLowerCase());
-            valuesArgs.add(attributes[1].replaceAll("'", "").trim());
+            valuesArgs.add(attributes[1].trim());
         }
     }
 }
