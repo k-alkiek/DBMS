@@ -42,7 +42,7 @@ public class DatabaseImp implements Database {
         IBooleanParser booleanParser = null;
         if(modifiedQuery.startsWith("create table")) {
             if (databaseManager.getDatabaseInUse() == null) {
-                return false;
+                throw new SQLException();
             }
             booleanParser = new CreateTableParser();
         }
