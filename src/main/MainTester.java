@@ -7,7 +7,6 @@ import java.sql.SQLException;
 public class MainTester {
     public static void main(String[] args) throws SQLException {
         DatabaseImp dp = new DatabaseImp();
-        dp.executeStructureQuery("Drop database sc3");
         dp.createDatabase("sc3",false);
         System.out.println(dp.executeStructureQuery("CREATE TABLE table_name1(column_name1 varchar , column_name2 int, column_name3 varchar) "));
         System.out.println(dp.executeUpdateQuery("INSERT INTO * table_name2(column_NAME1, COLUMN_name3, column_name2) VALUES ('value1', 'value3', 4)"));

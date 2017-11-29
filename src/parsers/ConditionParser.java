@@ -31,9 +31,9 @@ public class ConditionParser implements IConditionParser {
     private void setAttributes(String condition) {
         String[] attributes = condition.split("(<|>|=|>=|<=)");
         fieldName = attributes[0].trim().toLowerCase();
-        if(attributes[1].startsWith("'"))
+        if(attributes[1].trim().startsWith("'"))
             value = attributes[1].substring(1,attributes[1].length()-2);
         else
-            value = Integer.parseInt(attributes[1]);
+            value = Integer.parseInt(attributes[1].trim());
     }
 }
