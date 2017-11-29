@@ -39,6 +39,9 @@ public class DatabaseImp implements Database {
         String modifiedQuery = query.trim().toLowerCase();
         IBooleanParser booleanParser = null;
         if(modifiedQuery.startsWith("create table")) {
+            if (databaseManager.getDatabaseInUse() == null) {
+                return false;
+            }
             booleanParser = new CreateTableParser();
         }
         else if(modifiedQuery.startsWith("create database")) {
