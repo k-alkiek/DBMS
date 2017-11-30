@@ -15,21 +15,20 @@ public class DatabaseImp implements Database {
     }
     @Override
     public String createDatabase(String databaseName, boolean dropIfExists) {
-      databaseName = databaseName.toLowerCase();
+        databaseName = databaseName.toLowerCase();
         if(dropIfExists){
             try {
-                executeStructureQuery("DROP DATABASE "+databaseName);
-            } catch (SQLException e) { }
+                databaseManager.dropDatabase(databaseName);
+//                executeStructureQuery("DROP DATABASE " + databaseName);
+            } catch (SQLException e) {
+            }
             finally {
-                try {
-                    executeStructureQuery("CREATE DATABASE "+databaseName);
-                } catch (SQLException e) {}
+                databaseManager.createDatabase(databaseName);
+//                    executeStructureQuery("CREATE DATABASE " + databaseName);
             }
         }
         else {
-            try {
-                executeStructureQuery("CREATE DATABASE "+databaseName);
-            } catch (SQLException e) {}
+            databaseManager.createDatabase(databaseName);
         }
         return databaseManager.databasePath(databaseName);
     }
@@ -37,37 +36,35 @@ public class DatabaseImp implements Database {
     @Override
     public boolean executeStructureQuery(String query) throws SQLException {
         String modifiedQuery = query.trim().toLowerCase();
-        IBooleanParser booleanParser = null;
+        IBooleanParser booleanParser;
         if(modifiedQuery.startsWith("create table")) {
+            if (databaseManager.getDatabaseInUse() == null) {
+                throw new SQLException();
+            }
             booleanParser = new CreateTableParser();
-        }
-        else if(modifiedQuery.startsWith("create database")) {
+        } else if(modifiedQuery.startsWith("create database")) {
             booleanParser = new CreateDatabaseParser();
-        }
-        else if(modifiedQuery.startsWith("drop table")) {
+        } else if(modifiedQuery.startsWith("drop table")) {
             booleanParser = new DropTableParser();
-        }else if(modifiedQuery.startsWith("drop database")) {
+        } else if(modifiedQuery.startsWith("drop database")) {
             booleanParser = new DropDatabaseParser();
-        }
-        else {
-            //throw new SQLException(query);
-
-           return false;
+        } else {
+            return false;
         }
         try {
-//            throw new SQLException(query);
-
-           return booleanParser.parse(query);
+            return booleanParser.parse(query);
         }
         catch (Exception e) {
             throw new SQLException();
         }
-
     }
 
     @Override
     public Object[][] executeQuery(String query) throws SQLException {
-        ICollectionParser collectionParser = null;
+        if (databaseManager.getDatabaseInUse() == null) {
+            throw new SQLException();
+        }
+        ICollectionParser collectionParser;
         String modifiedQuery = query.trim().toLowerCase();
         if(modifiedQuery.startsWith("select"))
             collectionParser = new SelectParser();
@@ -83,7 +80,7 @@ public class DatabaseImp implements Database {
 
     @Override
     public int executeUpdateQuery(String query) throws SQLException {
-        IIntegerParser integerParser = null;
+        IIntegerParser integerParser;
         String modifiedQuery = query.trim().toLowerCase();
         if(modifiedQuery.startsWith("insert")) {
             integerParser = new InsertParser();
@@ -96,6 +93,11 @@ public class DatabaseImp implements Database {
         }
         else
             throw new SQLException();
-        return integerParser.parse(query);
+        try {
+            return integerParser.parse(query);
+        } catch (Exception e) {
+            throw new SQLException();
+        }
+
     }
 }

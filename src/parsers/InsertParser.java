@@ -70,12 +70,6 @@ public class InsertParser implements IIntegerParser {
                 query)) {
             columns = "*";
             return true;
-        } else if (Pattern.matches("(?i)\\s*(INSERT)\\s+" +
-                        "(INTO)\\s+\\w+\\s*(\\()\\s*(\\w+\\s*(,)\\s*)*\\w+\\s*(\\))\\s+" +
-                        "(VALUES)\\s*(\\()\\s*(.+\\s*(,)\\s*)*.+\\s*(\\))\\s*(;)?\\s*",
-                query)) {
-            return true;
-
         }
         return false;
     }
@@ -93,7 +87,7 @@ public class InsertParser implements IIntegerParser {
         List<String> value = new ArrayList<>();
         String[] inputs = values.trim().split(",");
         for (int i = 0; i < inputs.length; i++) {
-            value.add(inputs[i].trim().replaceAll("'", "").toLowerCase());
+            value.add(inputs[i].trim());
         }
         return value;
     }

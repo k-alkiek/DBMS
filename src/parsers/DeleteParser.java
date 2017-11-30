@@ -17,14 +17,14 @@ public class DeleteParser implements IIntegerParser {
         if (isValidQuery(query)) {
             IConditionParser conditionParser = new ConditionParser();
             ICondition cond = conditionParser.parse(getCondition(query));
-            IIntegerOperation delete = new DeleteFromTable(tableName, cond);
+            IIntegerOperation delete = new DeleteFromTable(getTableName(), cond);
             return delete.execute();
         } else {
             throw new SQLException("invalid Query");
         }
     }
 
-    public String getTableName(String query) {
+    public String getTableName() {
         tableName = tableName.toLowerCase();
         return tableName;
     }
@@ -39,12 +39,18 @@ public class DeleteParser implements IIntegerParser {
         if (Pattern.matches("(?i)\\s*(DELETE)\\s+(FROM)\\s+\\w+\\s+(WHERE)\\s+.+\\s*(;)?\\s*", query)) {
             query = query.trim();
             tableName = query.split("\\s+")[2];
+            if (tableName.contains("(")) {
+                tableName = tableName.substring(0, tableName.lastIndexOf("("));
+            }
             int firstIdx = query.toLowerCase().lastIndexOf("where") + 6;
             condition = query.substring(firstIdx);
             return true;
         } else if (Pattern.matches("(?i)\\s*(DELETE)\\s+(\\*)\\s+(FROM)\\s+\\w+\\s*(;)?\\s*", query)) {
+
+            return true;
+        } else if (Pattern.matches("(?i)\\s*(DELETE)\\s+(FROM)\\s+\\w+\\s*(;)?\\s*", query)) {
             query = query.trim();
-            tableName = query.split("\\s+")[3];
+            tableName = query.split("\\s+")[2];
             if(tableName.contains(";")) {
                 tableName = tableName.substring(0, tableName.lastIndexOf(";"));
             }

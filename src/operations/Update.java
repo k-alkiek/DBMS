@@ -3,7 +3,6 @@ package operations;
 import data.*;
 import query.ICondition;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Update implements IIntegerOperation {
@@ -42,10 +41,15 @@ public class Update implements IIntegerOperation {
     public int execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
-        TableCachedXml table = new TableCachedXml(database.getName(), tableName);
-        if(notVaild(table.getFields())) {
-            throw  null;
+        TableCachedXml table;
+        try {
+            table = new TableCachedXml(database.getName(), tableName);
+        } catch (Exception e) {
+            return 0;
         }
-       return table.update(myCondition, fieldNams, values);
+        if(notVaild(table.getFields())) {
+            throw new RuntimeException();
+        }
+        return table.update(myCondition, fieldNams, values);
     }
 }

@@ -23,7 +23,7 @@ public class Insert implements IIntegerOperation {
     }
 
     @Override
-    public int execute() throws SQLException {
+    public int execute() {
         DatabaseManager manager = DatabaseManager.getInstance();
         IDatabase database = manager.getDatabaseInUse();
         TableCachedXml table = new TableCachedXml(database.getName(), tableName);
@@ -34,7 +34,11 @@ public class Insert implements IIntegerOperation {
             for( int j = 0; j < listOfFields.size(); j++)
                 this.fieldNams.add(listOfFields.get(j).getName());
         }
-       Record record = new Record(table, fieldNams, objectValue);
+        try {
+            record = new Record(table, fieldNams, objectValue);
+        } catch (SQLException e) {
+
+        }
 
         for(int i=0;i<fieldNams.size();i++)
         {

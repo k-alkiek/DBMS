@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * Created by khaled on 11/22/17.
  */
 public class UpdateParser implements IIntegerParser {
-    private String condition, inputs, fieldName, value;
+    private String condition, inputs;
     private List<String> fieldNames, valuesArgs;
     @Override
     public int parse(String query) throws SQLException {
@@ -57,7 +57,7 @@ public class UpdateParser implements IIntegerParser {
             condition = query.substring(secondIdx, query.length());
             return true;
         } else if(Pattern.matches("(?i)\\s*(UPDATE)\\s+\\w+\\s+(SET)\\s+.+(;)?\\s*", query)) {
-            calculateArgs(query, query.length() - 1);
+            calculateArgs(query, query.length());
             condition = "*";
             return true;
         }
@@ -65,7 +65,7 @@ public class UpdateParser implements IIntegerParser {
     }
 
     private void calculateArgs(String query, int secondIdx) {
-        if (query.charAt(secondIdx) == ';') {
+        if (query.charAt(secondIdx - 1) == ';') {
             secondIdx--;
         }
         int firstIdx = query.toLowerCase().lastIndexOf("set") + 4;

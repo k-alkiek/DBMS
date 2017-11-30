@@ -5,8 +5,7 @@ import query.*;
 import java.sql.SQLException;
 
 public class ConditionParser implements IConditionParser {
-    private String fieldName;
-    private Object value;
+    private String fieldName, value;
     @Override
     public ICondition parse(String condition) throws SQLException {
         if (condition.contains("*")) {
@@ -16,7 +15,7 @@ public class ConditionParser implements IConditionParser {
             if (condition.contains(">=")) {
                 return new BiggerThanOrEqualCondition(fieldName, value);
             } else if (condition.contains("<=")) {
-                return new SamllerThanCondition(fieldName, value);
+                return new SamllerThanOrEqualCondition(fieldName, value);
             } else if (condition.contains("=")) {
                 return new EqualCondition(fieldName, value);
             } else if (condition.contains(">")) {
@@ -29,11 +28,8 @@ public class ConditionParser implements IConditionParser {
     }
 
     private void setAttributes(String condition) {
-        String[] attributes = condition.split("(<|>|=|>=|<=)");
+        String[] attributes = condition.split("(<=|>=|=|>|<)");
         fieldName = attributes[0].trim().toLowerCase();
-        if(attributes[1].trim().startsWith("'"))
-            value = attributes[1].substring(1,attributes[1].length()-2);
-        else
-            value = Integer.parseInt(attributes[1].trim());
+        value = attributes[1].trim().toLowerCase();
     }
 }

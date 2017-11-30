@@ -10,7 +10,7 @@ public class BiggerThanCondition implements ICondition {
     public boolean validate(IRecord record) {
         try {
             Object recordData = record.getAttribute(fieldName);
-            return ((Comparable)recordData).compareTo(data) == 1;
+            return ((Comparable)recordData).compareTo(Integer.parseInt(data.toString())) == 1;
         }
         catch (Exception e) {
             return false;

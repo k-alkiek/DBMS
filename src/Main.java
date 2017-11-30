@@ -15,8 +15,9 @@ public class Main {
         while (true) {
             query = input.nextLine();
             query = query.trim();
-            if (query.toLowerCase().startsWith("create (\\s+) database")) {
-                database.createDatabase(query, false);
+            if (query.toLowerCase().contains("create database")) {
+                String databaseName = query.split("\\s+")[2];
+                System.out.println(database.createDatabase(databaseName.toLowerCase().trim(), false));
             } else if (query.toLowerCase().startsWith("create") || query.toLowerCase().startsWith("drop")) {
                 System.out.println(database.executeStructureQuery(query));
             } else if (query.toLowerCase().startsWith("select")) {

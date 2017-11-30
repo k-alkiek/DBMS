@@ -8,9 +8,12 @@ public class EqualCondition implements ICondition {
 
     @Override
     public boolean validate(IRecord record) {
-        Object recordData;
         try {
-            return data.equals(record.getAttribute(fieldName));
+            Object recordData = record.getAttribute(fieldName);
+            if (!data.toString().contains("'"))
+                return ((Comparable)recordData).compareTo(Integer.parseInt(data.toString())) == 0;
+            else
+                return ((Comparable)recordData).compareTo(data.toString()) == 0;
         } catch (Exception e) {
             return false;
         }
