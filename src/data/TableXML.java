@@ -27,7 +27,9 @@ public class TableXML implements ITable {
         this.name = name;
 //        initializeTableFiles();
     }
-
+    public String getName() {
+        return this.name;
+    }
     @Override
     public int insert(IRecord record) {
         List<IField> fields = getFields();
@@ -202,7 +204,7 @@ public class TableXML implements ITable {
         setFields(new ArrayList<IField>());
     }
 
-    private List<IRecord> getRecords() {
+    public List<IRecord> getRecords() {
         List<IRecord> records = new ArrayList<>();
 
         try {
