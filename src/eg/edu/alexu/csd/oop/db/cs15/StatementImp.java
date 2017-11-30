@@ -17,7 +17,6 @@ public class StatementImp implements Statement {
 
     @Override
     public void close() throws SQLException {
-        // Todo
     }
 
     @Override
