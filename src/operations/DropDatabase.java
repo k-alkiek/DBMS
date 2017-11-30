@@ -3,6 +3,8 @@ package operations;
 import data.DatabaseManager;
 import data.Exceptions.DatabaseNotFoundException;
 
+import java.sql.SQLException;
+
 /**
  * Created by khaled on 11/20/17.
  */
@@ -18,7 +20,7 @@ public class DropDatabase implements IBooleanOperation{
         DatabaseManager manager = DatabaseManager.getInstance();
         try {
             manager.dropDatabase(databaseName);
-        } catch (DatabaseNotFoundException e) {
+        } catch (SQLException e) {
             return false;
         }
 

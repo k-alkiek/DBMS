@@ -18,20 +18,17 @@ public class DatabaseImp implements Database {
         databaseName = databaseName.toLowerCase();
         if(dropIfExists){
             try {
-                executeStructureQuery("DROP DATABASE " + databaseName);
+                databaseManager.dropDatabase(databaseName);
+//                executeStructureQuery("DROP DATABASE " + databaseName);
             } catch (SQLException e) {
             }
             finally {
-                try {
-                    executeStructureQuery("CREATE DATABASE " + databaseName);
-                } catch (SQLException e) {
-                }
+                databaseManager.createDatabase(databaseName);
+//                    executeStructureQuery("CREATE DATABASE " + databaseName);
             }
         }
         else {
-            try {
-                executeStructureQuery("CREATE DATABASE " + databaseName);
-            } catch (SQLException e) {}
+            databaseManager.createDatabase(databaseName);
         }
         return databaseManager.databasePath(databaseName);
     }
