@@ -12,12 +12,14 @@ public class DatabaseManager implements IDatabaseManager {
     private IDatabase databaseInUse;
     private static DatabaseManager databaseManager;
     public ArrayList<String> allDatabase = new ArrayList<>();
-    private static final String databasesPath = "Database" + System.getProperty("file.separator");
+    private static  String databasesPath = "Database" + System.getProperty("file.separator");
 
     private DatabaseManager() {
 
     }
-
+    public void setPath(String url) {
+        this.databasesPath = url;
+    }
     public static DatabaseManager getInstance() {
         if (databaseManager == null) {
             databaseManager = new DatabaseManager();

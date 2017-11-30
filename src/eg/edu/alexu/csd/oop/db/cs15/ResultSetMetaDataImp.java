@@ -1,21 +1,32 @@
 package eg.edu.alexu.csd.oop.db.cs15;
 
 import data.TableXML;
+import data.VarcharField;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResultSetMetaDataImp implements ResultSetMetaData {
     TableXML table ;
-    public ResultSetMetaDataImp (TableXML table) {
-        this.table = table;
+    Object[][] values;
+    List<String> fieldsName = new ArrayList<>();
+    String tableName;
+    public ResultSetMetaDataImp (Object[][] values, List<String> fieldsName, String tableName) {
+        this.values = values;
+        this.fieldsName = fieldsName;
+        this.tableName = tableName;
+    }
+    private int getsize() {
+        return values.length;
     }
     @Override
     public int getColumnCount() throws SQLException {
 
         try {
-            return table.getFields().size();
+            return getsize();
 
         } catch (Exception e) {
 
@@ -66,7 +77,10 @@ public class ResultSetMetaDataImp implements ResultSetMetaData {
     @Override
     public String getColumnName(int i) throws SQLException {
         try {
-            return table.getFields().get(i).getName();
+            if(i - 1 >= fieldsName.size()){
+                throw new SQLException();
+            }
+            return fieldsName.get(i - 1);
 
         } catch (Exception e) {
 
@@ -91,7 +105,7 @@ public class ResultSetMetaDataImp implements ResultSetMetaData {
     @Override
     public String getTableName(int i) throws SQLException {
         try {
-            return table.getName();
+            return tableName;
 
         } catch (Exception e) {
 
@@ -107,10 +121,10 @@ public class ResultSetMetaDataImp implements ResultSetMetaData {
     public int getColumnType(int i) throws SQLException {
 
         try {
-            if (table.getFields().get(i).getType().equals("VarcharField")) {
+            if (values[0][ i - 1] instanceof String) {
                 return Types.VARCHAR;
             }
-            else if (table.getFields().get(i).getType().equals( "IntField" )) {
+            else if (values[0][i - 1] instanceof Integer) {
                 return Types.INTEGER;
             }
             throw new SQLException();

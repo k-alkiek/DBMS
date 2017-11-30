@@ -1,5 +1,6 @@
 package eg.edu.alexu.csd.oop.db.cs15;
 
+import data.DatabaseManager;
 import eg.edu.alexu.csd.oop.db.Database;
 
 import java.sql.*;
@@ -14,12 +15,13 @@ public class ConnectionImp implements Connection {
     public ConnectionImp(String path) {
         this.path = path;
         database = new DatabaseImp();
+        database.createDatabase(path,false);
     }
 
     @Override
     public Statement createStatement() throws SQLException {
         databaseNumber++;
-        database.createDatabase("Database"+databaseNumber,false);
+        //database.createDatabase("Database"+databaseNumber,false);
         Statement statement = new StatementImp(database,this);
         return statement;
     }

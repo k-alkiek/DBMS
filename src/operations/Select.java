@@ -7,13 +7,14 @@ import java.util.List;
 
 public class Select implements IDataOperation {
     private ICondition myCondition;
-    private String tableName;
+    private static String  tableName;
     private String databaseName;
-    private List<String> selectedFields;
+    private static List<String> selectedFields;
     public Select(ICondition condition, String tableName, String databaseName, List<String> FieldsName) {
         this.myCondition = condition;
         this.databaseName = databaseName;
         this.tableName = tableName;
+        selectedFields.clear();
         this.selectedFields =  FieldsName;
 
     }
@@ -25,6 +26,12 @@ public class Select implements IDataOperation {
             }
         }
         return false;
+    }
+    public static String getTableName() {
+        return tableName;
+    }
+    public static List<String> getSelectedFields() {
+        return selectedFields;
     }
     public boolean notVaild(List<IField> listOfFields) {
         for(int i = 0; i < selectedFields.size(); i++)

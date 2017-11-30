@@ -18,7 +18,7 @@ public class DropDatabase implements IBooleanOperation{
         DatabaseManager manager = DatabaseManager.getInstance();
         try {
             manager.dropDatabase(databaseName);
-        } catch (DatabaseNotFoundException e) {
+        } catch (Exception e) {
             return false;
         }
 

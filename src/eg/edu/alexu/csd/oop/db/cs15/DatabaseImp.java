@@ -50,14 +50,19 @@ public class DatabaseImp implements Database {
             booleanParser = new DropDatabaseParser();
         }
         else {
-            return false;
+            //throw new SQLException(query);
+
+           return false;
         }
         try {
-            return booleanParser.parse(query);
+//            throw new SQLException(query);
+
+           return booleanParser.parse(query);
         }
         catch (Exception e) {
             throw new SQLException();
         }
+
     }
 
     @Override

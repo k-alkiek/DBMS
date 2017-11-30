@@ -2,6 +2,8 @@ package eg.edu.alexu.csd.oop.db.cs15;
 
 
 import eg.edu.alexu.csd.oop.db.Database;
+import operations.Insert;
+import operations.Select;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,8 +21,13 @@ public class StatementImp implements Statement {
     }
     @Override
     public ResultSet executeQuery(String s) throws SQLException {
-        // Todo
-        throw new UnsupportedOperationException();
+        try {
+            Object[][] values = database.executeQuery(s);
+            ResultSetImp resultSet = new ResultSetImp(values, (ArrayList<String>) Select.getSelectedFields(), Select.getTableName());
+            return resultSet;
+        } catch (Exception e) {
+            throw new UnsupportedOperationException();
+        }
     }
 
     @Override

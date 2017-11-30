@@ -10,9 +10,10 @@ public class DriverImp implements Driver {
     @Override
     public Connection connect(String url, Properties info) throws SQLException {
         File dir = (File) info.get("path");
-        String path = dir.getAbsolutePath();
-        throw new SQLException(path);
-        //return DriverManager.getConnection(path); // pool
+        String path = dir.getPath();
+        Connection connection = new ConnectionImp(path);
+        // Direction direction = new Di
+        return connection;
     }
 
     @Override
