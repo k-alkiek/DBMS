@@ -38,6 +38,7 @@ public class DatabaseManager implements IDatabaseManager {
         File databaseDir = new File(databasePath(databaseName));
         deleteFilesInDirectory(databaseDir);
         databaseDir.delete();
+        databaseInUse = null;
     }
 
     @Override

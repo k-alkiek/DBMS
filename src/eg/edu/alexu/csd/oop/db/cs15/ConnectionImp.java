@@ -1,15 +1,27 @@
 package eg.edu.alexu.csd.oop.db.cs15;
 
+import eg.edu.alexu.csd.oop.db.Database;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class ConnectionImp implements Connection {
+    String path;
+    int databaseNumber = 0;
+    Database database;
+    public ConnectionImp(String path) {
+        this.path = path;
+        database = new DatabaseImp();
+    }
+
     @Override
     public Statement createStatement() throws SQLException {
-        // Todo
-        return null;
+        databaseNumber++;
+        database.createDatabase("Database"+databaseNumber,false);
+        Statement statement = new StatementImp(database,this);
+        return statement;
     }
 
     @Override
@@ -49,7 +61,7 @@ public class ConnectionImp implements Connection {
 
     @Override
     public void close() throws SQLException {
-        // Todo
+        database = null;
     }
 
     @Override

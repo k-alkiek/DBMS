@@ -1,8 +1,22 @@
 package eg.edu.alexu.csd.oop.db.cs15;
 
+
+import eg.edu.alexu.csd.oop.db.Database;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StatementImp implements Statement {
+    Database database;
+    int queryTimeout = 0;
+    Connection connection;
+    List<String> batchs;
+    public StatementImp(Database database, Connection connection){
+        this.database = database;
+        this.connection = connection;
+        batchs = new ArrayList<>();
+    }
     @Override
     public ResultSet executeQuery(String s) throws SQLException {
         // Todo
@@ -11,8 +25,7 @@ public class StatementImp implements Statement {
 
     @Override
     public int executeUpdate(String s) throws SQLException {
-        // Todo
-        throw new UnsupportedOperationException();
+        return database.executeUpdateQuery(s);
     }
 
     @Override
@@ -46,14 +59,12 @@ public class StatementImp implements Statement {
 
     @Override
     public int getQueryTimeout() throws SQLException {
-        // Todo
-        throw new UnsupportedOperationException();
+        return queryTimeout;
     }
 
     @Override
     public void setQueryTimeout(int i) throws SQLException {
-        // Todo
-        throw new UnsupportedOperationException();
+        this.queryTimeout = i;
     }
 
     @Override
@@ -78,8 +89,7 @@ public class StatementImp implements Statement {
 
     @Override
     public boolean execute(String s) throws SQLException {
-        // Todo
-        throw new UnsupportedOperationException();
+        return database.executeStructureQuery(s);
     }
 
     @Override
@@ -129,25 +139,25 @@ public class StatementImp implements Statement {
 
     @Override
     public void addBatch(String s) throws SQLException {
-        // Todo
-        throw new UnsupportedOperationException();
+        batchs.add(s);
     }
 
     @Override
     public void clearBatch() throws SQLException {
-        // Todo
+        batchs.clear();
     }
 
     @Override
     public int[] executeBatch() throws SQLException {
-        // Todo
-        return new int[0];
+        int[] results = new int[batchs.size()];
+        for(int i = 0;i < batchs.size();i++)
+            results[i] = executeUpdate(batchs.get(i));
+        return results;
     }
 
     @Override
     public Connection getConnection() throws SQLException {
-        // Todo
-        throw new UnsupportedOperationException();
+        return connection;
     }
 
     @Override
