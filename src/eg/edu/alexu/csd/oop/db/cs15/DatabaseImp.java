@@ -70,12 +70,13 @@ public class DatabaseImp implements Database {
             collectionParser = new SelectParser();
         else
             throw new SQLException();
+        return collectionParser.parse(query);
 
-        try {
+       /* try {
             return collectionParser.parse(query);
         } catch (Exception e) {
             throw new SQLException();
-        }
+        }*/
     }
 
     @Override

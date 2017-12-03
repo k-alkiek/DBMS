@@ -14,7 +14,7 @@ public class Select implements IDataOperation {
         this.myCondition = condition;
         this.databaseName = databaseName;
         this.tableName = tableName;
-        selectedFields.clear();
+       // selectedFields.clear();
         this.selectedFields =  FieldsName;
 
     }
