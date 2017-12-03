@@ -14,6 +14,7 @@ public class StatementImp implements Statement {
     int queryTimeout = 0;
     Connection connection;
     List<String> batchs;
+    Boolean close = false;
     public StatementImp(Database database, Connection connection){
         this.database = database;
         this.connection = connection;
@@ -21,22 +22,35 @@ public class StatementImp implements Statement {
     }
     @Override
     public ResultSet executeQuery(String s) throws SQLException {
+        if(close)
+            throw new SQLException();
         try {
+
             Object[][] values = database.executeQuery(s);
             ResultSetImp resultSet = new ResultSetImp(values, (ArrayList<String>) Select.getSelectedFields(), Select.getTableName());
+            //  throw new Exception(s);
             return resultSet;
         } catch (Exception e) {
-            throw new UnsupportedOperationException();
+            // throw new SQLException(s);
+            throw new SQLException();
         }
+
     }
 
     @Override
     public int executeUpdate(String s) throws SQLException {
-        return database.executeUpdateQuery(s);
+        if(close)
+            throw new SQLException();
+        try {
+            return database.executeUpdateQuery(s);
+        } catch (Exception ex) {
+            throw new SQLException();
+        }
     }
 
     @Override
     public void close() throws SQLException {
+        close = true;
     }
 
     @Override
@@ -66,13 +80,18 @@ public class StatementImp implements Statement {
 
     @Override
     public int getQueryTimeout() throws SQLException {
+        if(close)
+            throw new SQLException();
         return queryTimeout;
     }
 
     @Override
     public void setQueryTimeout(int i) throws SQLException {
+        if(close)
+            throw new SQLException();
         this.queryTimeout = i;
     }
+
 
     @Override
     public void cancel() throws SQLException {
@@ -96,8 +115,11 @@ public class StatementImp implements Statement {
 
     @Override
     public boolean execute(String s) throws SQLException {
+        if(close)
+            throw new SQLException();
         return database.executeStructureQuery(s);
     }
+
 
     @Override
     public ResultSet getResultSet() throws SQLException {
@@ -146,16 +168,25 @@ public class StatementImp implements Statement {
 
     @Override
     public void addBatch(String s) throws SQLException {
-        batchs.add(s);
+        if(!close) {
+            batchs.add(s);
+        }
+        else {
+            throw new SQLException();
+        }
     }
 
     @Override
     public void clearBatch() throws SQLException {
+        if(close)
+            throw new SQLException();
         batchs.clear();
     }
 
     @Override
     public int[] executeBatch() throws SQLException {
+        if(close)
+            throw new SQLException();
         int[] results = new int[batchs.size()];
         for(int i = 0;i < batchs.size();i++)
             results[i] = executeUpdate(batchs.get(i));
@@ -164,6 +195,8 @@ public class StatementImp implements Statement {
 
     @Override
     public Connection getConnection() throws SQLException {
+        if(close)
+            throw new SQLException();
         return connection;
     }
 

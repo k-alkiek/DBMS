@@ -1,7 +1,6 @@
 package eg.edu.alexu.csd.oop.db.cs15;
 
 import data.TableXML;
-import data.VarcharField;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -19,14 +18,17 @@ public class ResultSetMetaDataImp implements ResultSetMetaData {
         this.fieldsName = fieldsName;
         this.tableName = tableName;
     }
-    private int getsize() {
+    private int recordsNumber() {
         return values.length;
+    }
+    private int coiumnCount() {
+        return values[0].length;
     }
     @Override
     public int getColumnCount() throws SQLException {
 
         try {
-            return getsize();
+            return coiumnCount();
 
         } catch (Exception e) {
 
@@ -110,7 +112,8 @@ public class ResultSetMetaDataImp implements ResultSetMetaData {
         } catch (Exception e) {
 
             throw new SQLException();
-        }    }
+        }
+    }
 
     @Override
     public String getCatalogName(int i) throws SQLException {

@@ -1,9 +1,5 @@
 package eg.edu.alexu.csd.oop.db.cs15;
 
-import data.IRecord;
-import data.Record;
-import data.TableXML;
-
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -27,24 +23,25 @@ public class ResultSetImp implements ResultSet {
         this.tableName = tableName;
     }
 
-    private int getsize() {
+    private int getRowNumbers() {
         return values.length;
     }
     @Override
     public boolean next() throws SQLException {
-        try {
-            if(crusor + 1 >= getsize()) {
-                crusor ++;
-                return false;
-            }
-            else {
-                crusor ++;
-                return  true;
-            }
-        } catch (Exception e) {
-
+        if(close)
             throw new SQLException();
-        }
+        try {
+                if (crusor + 1 >= getRowNumbers()) {
+                    crusor = getRowNumbers();
+                    return false;
+                } else {
+                    crusor++;
+                    return true;
+                }
+            } catch (Exception e) {
+
+                throw new SQLException();
+            }
     }
 
     @Override
@@ -64,13 +61,18 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public String getString(int i) throws SQLException {
-        try {
-            if( values.length == 0 || i - 1 < 0 || i - 1 >= values[0].length ||  crusor < 0 || crusor >= values[0].length) {
-                throw new SQLException();
-            }
-            return values[crusor][i - 1].toString();
-        } catch (Exception e) {
+       if(!close) {
+           try {
+               if (values.length == 0 || i - 1 < 0 || i - 1 >= values[0].length || crusor < 0 || crusor >= getRowNumbers()) {
+                   throw new SQLException();
+               }
+               return values[crusor][i - 1].toString();
+           } catch (Exception e) {
 
+               throw new SQLException();
+           }
+       }
+             else {
             throw new SQLException();
         }
     }
@@ -92,13 +94,18 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public int getInt(int i) throws SQLException {
-        try {
-            if( values.length == 0 || i - 1 < 0 || i - 1 >= values[0].length ||  crusor < 0 || crusor >= values[0].length) {
+        if(!close) {
+            try {
+                if (values.length == 0 || i - 1 < 0 || i - 1 >= values[0].length || crusor < 0 || crusor >= getRowNumbers()) {
+                    throw new SQLException();
+                }
+                return Integer.parseInt(values[crusor][i - 1].toString());
+            } catch (Exception e) {
+
                 throw new SQLException();
             }
-            return Integer.parseInt(values[crusor][i - 1].toString());
-        } catch (Exception e) {
-
+        }
+             else {
             throw new SQLException();
         }
     }
@@ -160,18 +167,23 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public String getString(String s) throws SQLException {
-        try {
-            if( values.length == 0 || crusor < 0 || crusor >= values[0].length) {
+        if(!close) {
+            try {
+                if (values.length == 0 || crusor < 0 || crusor >= getRowNumbers()) {
+                    throw new SQLException();
+                }
+                for (int i = 0; i < fieldsName.size(); i++) {
+                    if (fieldsName.get(i).equals(s)) {
+                        return values[crusor][i].toString();
+                    }
+                }
+                throw new SQLException();
+            } catch (Exception e) {
+
                 throw new SQLException();
             }
-            for (int i = 0; i < fieldsName.size(); i++) {
-                if (fieldsName.get(i).equals("s")) {
-                    return values[crusor][i].toString();
-                }
-            }
-            throw new SQLException();
-        } catch (Exception e) {
-
+        }
+             else {
             throw new SQLException();
         }
     }
@@ -193,20 +205,22 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public int getInt(String s) throws SQLException {
+        if(close)
+            throw new SQLException();
         try {
-            if( values.length == 0 || crusor < 0 || crusor >= values[0].length) {
+                if (values.length == 0 || crusor < 0 || crusor >= getRowNumbers()) {
+                    throw new SQLException();
+                }
+                for (int i = 0; i < fieldsName.size(); i++) {
+                    if (fieldsName.get(i).equals(s)) {
+                        return Integer.parseInt(values[crusor][i].toString());
+                    }
+                }
+                throw new SQLException();
+            } catch (Exception e) {
+
                 throw new SQLException();
             }
-            for (int i = 0; i < fieldsName.size(); i++) {
-                if (fieldsName.get(i).equals("s")) {
-                    return Integer.parseInt(values[crusor][i].toString());
-                }
-            }
-            throw new SQLException();
-        } catch (Exception e) {
-
-            throw new SQLException();
-        }
     }
 
     @Override
@@ -281,28 +295,34 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public ResultSetMetaData getMetaData() throws SQLException {
-        try {
-            ResultSetMetaDataImp result = new ResultSetMetaDataImp(values, fieldsName, tableName);
-            return  result;
-
-        } catch (Exception e) {
-
+        if(close)
             throw new SQLException();
-        }
+        try {
+                ResultSetMetaDataImp result = new ResultSetMetaDataImp(values, fieldsName, tableName);
+                return result;
+
+            } catch (Exception e) {
+
+                throw new SQLException();
+            }
+
     }
 
     @Override
     public Object getObject(int i) throws SQLException {
-        try {
-            if( values.length == 0 || i - 1 < 0 || i - 1 >= values[0].length ||  crusor < 0 || crusor >= values[0].length) {
+        if(close)
+            throw new SQLException();
+            try {
+                if (values.length == 0 || i - 1 < 0 || i - 1 >= values[0].length || crusor < 0 || crusor >= getRowNumbers()) {
+                    throw new SQLException();
+                }
+                return values[crusor][i - 1];
+            } catch (Exception e) {
+
                 throw new SQLException();
             }
-            return values[crusor][i - 1];
-        } catch (Exception e) {
-
-            throw new SQLException();
         }
-    }
+
 
     @Override
     public Object getObject(String s) throws SQLException {
@@ -311,18 +331,21 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public int findColumn(String s) throws SQLException {
-        try {
-            for(int i = 0; i < fieldsName.size(); i++) {
-                if(fieldsName.get(i).equals(s)) {
-                    return i;
+        if(close)
+            throw new SQLException();
+            try {
+                for (int i = 0; i < fieldsName.size(); i++) {
+                    if (fieldsName.get(i).equals(s)) {
+                        return i;
+                    }
                 }
-            }
-            throw new SQLException();
-        } catch (Exception e) {
+                throw new SQLException();
+            } catch (Exception e) {
 
-            throw new SQLException();
+                throw new SQLException();
+            }
         }
-    }
+
 
     @Override
     public Reader getCharacterStream(int i) throws SQLException {
@@ -346,113 +369,128 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public boolean isBeforeFirst() throws SQLException {
-        try {
-            if (crusor == -1) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
+        if(close)
             throw new SQLException();
+        try {
+                if (crusor == -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                throw new SQLException();
+            }
         }
-    }
+
 
     @Override
     public boolean isAfterLast() throws SQLException {
-        try {
-            if(crusor >= getsize()) {
-                return true;
-            }
-            else {
-                return false;
-            }
-
-        } catch (Exception e) {
+        if(close)
             throw new SQLException();
+        try {
+                if (crusor >= getRowNumbers()) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } catch (Exception e) {
+                throw new SQLException();
+            }
         }
-    }
+
 
 
     @Override
     public boolean isFirst() throws SQLException {
-        try {
-            if(crusor == 0 ) {
-                return true;
-            }
-            else {
-                return false;
-            }
-
-        } catch (Exception e) {
+        if(close)
             throw new SQLException();
+        try {
+                if (crusor == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } catch (Exception e) {
+                throw new SQLException();
+            }
         }
-    }
+
 
     @Override
     public boolean isLast() throws SQLException {
-        try {
-            if(crusor == getsize() - 1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-
-        } catch (Exception e) {
+        if(close)
             throw new SQLException();
+        try {
+                if (crusor == getRowNumbers() - 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } catch (Exception e) {
+                throw new SQLException();
+            }
         }
-    }
 
     @Override
     public void beforeFirst() throws SQLException {
-        try {
-            crusor = -1;
-        } catch (Exception e) {
+        if(close)
             throw new SQLException();
-        }
-    }
+           try {
+               crusor = -1;
+           } catch (Exception e) {
+               throw new SQLException();
+           }
+       }
+
 
     @Override
     public void afterLast() throws SQLException {
-        try {
-            crusor = getsize();
-        } catch (Exception e) {
+        if(close)
             throw new SQLException();
+            try {
+                crusor = getRowNumbers();
+            }
+            catch (Exception e) {
+                throw new SQLException();
+            }
         }
-    }
 
 
     @Override
     public boolean first() throws SQLException {
-        try {
-            crusor = 0;
-
-            if(getsize()  == 0) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        } catch (Exception e) {
+        if(close)
             throw new SQLException();
-        }
-
-    }
+          try {
+              crusor = 0;
+              if (getRowNumbers() == 0) {
+                  return false;
+              } else {
+                  return true;
+              }
+          } catch (Exception e) {
+              throw new SQLException();
+          }
+      }
 
     @Override
     public boolean last() throws SQLException {
-        try {
-            crusor = getsize() - 1;
-            if(getsize()  == 0) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        } catch (Exception e) {
+        if(close)
             throw new SQLException();
+            try {
+                crusor = getRowNumbers() - 1;
+                if (getRowNumbers() == 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                throw new SQLException();
+            }
         }
-    }
+
 
     @Override
     public int getRow() throws SQLException {
@@ -461,27 +499,38 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public boolean absolute(int i) throws SQLException {
-        try {
-
-            if(i == 0) {
-                crusor  = -1;
-            }
-            else if(i > 0) {
-                crusor = i;
-            }
-            else {
-                crusor = getsize() + i;
-            }
-            if(crusor >= getsize() || crusor < 0) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        } catch (Exception e) {
+        if(close)
             throw new SQLException();
+            try {
+
+                if (i == 0) {
+                    crusor = -1;
+                }
+                else if (i > 0) {
+                    crusor = i - 1;
+                }
+                else {
+                    crusor = getRowNumbers() + i;
+                    }
+
+                if (crusor >= getRowNumbers() || crusor < 0) {
+                        if (crusor < 0) {
+                        crusor = -1;
+                        }
+                        if (crusor >= getRowNumbers()) {
+                            crusor = getRowNumbers();
+                        }
+                        return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            catch (Exception e) {
+                throw new SQLException();
+            }
         }
-    }
+
 
     @Override
     public boolean relative(int i) throws SQLException {
@@ -490,24 +539,29 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public boolean previous() throws SQLException {
-        try {
-            crusor --;
-            if(crusor >= getsize() || crusor < 0) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        } catch (Exception e) {
+        if(close)
             throw new SQLException();
+        try {
+                crusor--;
+                if (crusor >= getRowNumbers() || crusor < 0) {
+                    if (crusor < 0) {
+                        crusor = -1;
+                    }
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            catch (Exception e) {
+                throw new SQLException();
+            }
         }
-    }
-
 
 
     @Override
     public void setFetchDirection(int i) throws SQLException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -517,7 +571,7 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public void setFetchSize(int i) throws SQLException {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -576,262 +630,264 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public void updateInt(int i, int i1) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateLong(int i, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateFloat(int i, float v) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateDouble(int i, double v) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBigDecimal(int i, BigDecimal bigDecimal) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateString(int i, String s) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBytes(int i, byte[] bytes) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateDate(int i, Date date) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateTime(int i, Time time) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateTimestamp(int i, Timestamp timestamp) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateAsciiStream(int i, InputStream inputStream, int i1) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBinaryStream(int i, InputStream inputStream, int i1) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateCharacterStream(int i, Reader reader, int i1) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateObject(int i, Object o, int i1) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateObject(int i, Object o) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateNull(String s) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBoolean(String s, boolean b) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateByte(String s, byte b) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateShort(String s, short i) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateInt(String s, int i) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateLong(String s, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateFloat(String s, float v) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateDouble(String s, double v) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBigDecimal(String s, BigDecimal bigDecimal) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateString(String s, String s1) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBytes(String s, byte[] bytes) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateDate(String s, Date date) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateTime(String s, Time time) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateTimestamp(String s, Timestamp timestamp) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateAsciiStream(String s, InputStream inputStream, int i) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBinaryStream(String s, InputStream inputStream, int i) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateCharacterStream(String s, Reader reader, int i) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateObject(String s, Object o, int i) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateObject(String s, Object o) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void insertRow() throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateRow() throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void deleteRow() throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void refreshRow() throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void cancelRowUpdates() throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void moveToInsertRow() throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void moveToCurrentRow() throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public Statement getStatement() throws SQLException {
-        try {
-            if(statment == null) {
-                return null;
-            }
-            return statment;
-        }
-        catch (Exception ex) {
+        if(close)
             throw new SQLException();
+        try {
+                if (statment == null) {
+                    return null;
+                }
+                return statment;
+            } catch (Exception ex) {
+                throw new SQLException();
+            }
         }
-    }
+
 
     @Override
     public Object getObject(int i, Map<String, Class<?>> map) throws SQLException {
@@ -925,49 +981,49 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public void updateRef(int i, Ref ref) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateRef(String s, Ref ref) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBlob(int i, Blob blob) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBlob(String s, Blob blob) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateClob(int i, Clob clob) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateClob(String s, Clob clob) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateArray(int i, Array array) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateArray(String s, Array array) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -983,13 +1039,13 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public void updateRowId(int i, RowId rowId) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateRowId(String s, RowId rowId) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -1020,13 +1076,13 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public void updateNClob(int i, NClob nClob) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateNClob(String s, NClob nClob) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -1052,13 +1108,13 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public void updateSQLXML(int i, SQLXML sqlxml) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateSQLXML(String s, SQLXML sqlxml) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
@@ -1084,169 +1140,169 @@ public class ResultSetImp implements ResultSet {
 
     @Override
     public void updateNCharacterStream(int i, Reader reader, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateNCharacterStream(String s, Reader reader, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateAsciiStream(int i, InputStream inputStream, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBinaryStream(int i, InputStream inputStream, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateCharacterStream(int i, Reader reader, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateAsciiStream(String s, InputStream inputStream, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBinaryStream(String s, InputStream inputStream, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateCharacterStream(String s, Reader reader, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBlob(int i, InputStream inputStream, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBlob(String s, InputStream inputStream, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateClob(int i, Reader reader, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateClob(String s, Reader reader, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateNClob(int i, Reader reader, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateNClob(String s, Reader reader, long l) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateNCharacterStream(int i, Reader reader) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateNCharacterStream(String s, Reader reader) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateAsciiStream(int i, InputStream inputStream) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBinaryStream(int i, InputStream inputStream) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateCharacterStream(int i, Reader reader) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateAsciiStream(String s, InputStream inputStream) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBinaryStream(String s, InputStream inputStream) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateCharacterStream(String s, Reader reader) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBlob(int i, InputStream inputStream) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateBlob(String s, InputStream inputStream) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateClob(int i, Reader reader) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateClob(String s, Reader reader) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateNClob(int i, Reader reader) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
 
     }
 
     @Override
     public void updateNClob(String s, Reader reader) throws SQLException {
-        throw new SQLException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
