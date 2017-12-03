@@ -5,14 +5,18 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.io.Serializable;
 public class DriverImp implements Driver {
     @Override
     public Connection connect(String url, Properties info) throws SQLException {
+        Log.getLogger().info("Driver: Start Connecting to "+url);
+        if(!acceptsURL(url)) {
+            Log.getLogger().error("Driver: Can't Connecting to "+url);
+            return null;
+        }
         File dir = (File) info.get("path");
         String path = dir.getPath();
         Connection connection = new ConnectionImp(path);
-        // Direction direction = new Di
+        Log.getLogger().info("Driver: Successfully Connected to "+url);
         return connection;
     }
 

@@ -2,7 +2,6 @@ package eg.edu.alexu.csd.oop.db.cs15;
 
 
 import eg.edu.alexu.csd.oop.db.Database;
-import operations.Insert;
 import operations.Select;
 
 import java.sql.*;
@@ -22,16 +21,18 @@ public class StatementImp implements Statement {
     }
     @Override
     public ResultSet executeQuery(String s) throws SQLException {
-        if(close)
+        Log.getLogger().info("Statement: Started executing Query : "+ s);
+        if(close) {
+            Log.getLogger().error("Statement: Closed Statement");
             throw new SQLException();
+        }
         try {
-
             Object[][] values = database.executeQuery(s);
             ResultSetImp resultSet = new ResultSetImp(values, (ArrayList<String>) Select.getSelectedFields(), Select.getTableName());
-            //  throw new Exception(s);
+            Log.getLogger().info("Statement: Finished executing Query : "+ s);
             return resultSet;
         } catch (Exception e) {
-            // throw new SQLException(s);
+            Log.getLogger().error("Statement: Failed executing Query : "+ s);
             throw new SQLException();
         }
 
@@ -39,17 +40,24 @@ public class StatementImp implements Statement {
 
     @Override
     public int executeUpdate(String s) throws SQLException {
-        if(close)
+        Log.getLogger().info("Statement: Started executing Update : "+s);
+        if(close) {
+            Log.getLogger().error("Statement: Closed Statement");
             throw new SQLException();
+        }
         try {
-            return database.executeUpdateQuery(s);
+            int result = database.executeUpdateQuery(s);
+            Log.getLogger().info("Statement: Finished executing Update : "+ s +" result is "+result);
+            return result;
         } catch (Exception ex) {
+            Log.getLogger().error("Statement: Failed executing Update : "+ s);
             throw new SQLException();
         }
     }
 
     @Override
     public void close() throws SQLException {
+        Log.getLogger().info("Statement: closing");
         close = true;
     }
 
@@ -80,6 +88,7 @@ public class StatementImp implements Statement {
 
     @Override
     public int getQueryTimeout() throws SQLException {
+        Log.getLogger().info("Statement: Getting Timeout");
         if(close)
             throw new SQLException();
         return queryTimeout;
@@ -87,8 +96,11 @@ public class StatementImp implements Statement {
 
     @Override
     public void setQueryTimeout(int i) throws SQLException {
-        if(close)
+        Log.getLogger().info("Statement: Setting Timeout : "+i);
+        if(close) {
+            Log.getLogger().error("Statement: Closed Statement");
             throw new SQLException();
+        }
         this.queryTimeout = i;
     }
 
@@ -115,9 +127,14 @@ public class StatementImp implements Statement {
 
     @Override
     public boolean execute(String s) throws SQLException {
-        if(close)
+        Log.getLogger().info("Statement: Started executing : "+s);
+        if(close) {
+            Log.getLogger().error("Statement: Closed Statement");
             throw new SQLException();
-        return database.executeStructureQuery(s);
+        }
+        boolean result = database.executeStructureQuery(s);
+        Log.getLogger().info("Statement: Finished executing : "+ s +" result is "+result);
+        return result;
     }
 
 
@@ -168,10 +185,12 @@ public class StatementImp implements Statement {
 
     @Override
     public void addBatch(String s) throws SQLException {
+        Log.getLogger().info("Statement: adding batch : "+s);
         if(!close) {
             batchs.add(s);
         }
         else {
+            Log.getLogger().error("Statement: Closed Statement");
             throw new SQLException();
         }
     }
@@ -185,8 +204,11 @@ public class StatementImp implements Statement {
 
     @Override
     public int[] executeBatch() throws SQLException {
-        if(close)
+        Log.getLogger().info("Statement: Started executing batch ");
+        if(close) {
+            Log.getLogger().error("Statement: Closed Statement");
             throw new SQLException();
+        }
         int[] results = new int[batchs.size()];
         for(int i = 0;i < batchs.size();i++)
             results[i] = executeUpdate(batchs.get(i));
@@ -195,8 +217,11 @@ public class StatementImp implements Statement {
 
     @Override
     public Connection getConnection() throws SQLException {
-        if(close)
+        Log.getLogger().info("Statement: getting connection");
+        if(close) {
+            Log.getLogger().error("Statement: Closed Statement");
             throw new SQLException();
+        }
         return connection;
     }
 

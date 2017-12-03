@@ -1,6 +1,5 @@
 package eg.edu.alexu.csd.oop.db.cs15;
 
-import data.DatabaseManager;
 import eg.edu.alexu.csd.oop.db.Database;
 
 import java.sql.*;
@@ -10,7 +9,6 @@ import java.util.concurrent.Executor;
 
 public class ConnectionImp implements Connection {
     String path;
-    int databaseNumber = 0;
     Database database;
     public ConnectionImp(String path) {
         this.path = path;
@@ -20,9 +18,9 @@ public class ConnectionImp implements Connection {
 
     @Override
     public Statement createStatement() throws SQLException {
-        databaseNumber++;
-        //database.createDatabase("Database"+databaseNumber,false);
+        Log.getLogger().info("Connection: Started Creating Statement");
         Statement statement = new StatementImp(database,this);
+        Log.getLogger().info("Connection: Finished Creating Statement");
         return statement;
     }
 
@@ -63,6 +61,7 @@ public class ConnectionImp implements Connection {
 
     @Override
     public void close() throws SQLException {
+        Log.getLogger().info("Connection: Closing");
         database = null;
     }
 
